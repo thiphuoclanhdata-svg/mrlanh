@@ -44,7 +44,6 @@
       padding: 30px 20px;
     }
 
-    /* Header */
     header {
       display: flex;
       justify-content: space-between;
@@ -70,7 +69,6 @@
     }
     .theme-btn:hover { border-color: var(--primary); }
 
-    /* Thanh tìm kiếm và bộ lọc */
     .controls {
       display: flex;
       flex-direction: column;
@@ -111,7 +109,6 @@
       border-color: var(--primary);
     }
 
-    /* Danh sách tài liệu */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -209,16 +206,13 @@
     <div class="grid" id="docGrid"></div>
 
     <footer>
-      <p>© 2026 - Trang chia sẻ tài liệu học tập cá nhân | Liên hệ: email@example.com</p>
+      <p>© 2026 - Trang chia sẻ tài liệu học tập cá nhân</p>
     </footer>
   </div>
 
   <script>
-    // ==========================================
-    // DANH SÁCH TÀI LIỆU (Bạn chỉnh sửa tại đây)
-    // ==========================================
     const documents = [
-     {
+      {
         title: "Sách Giáo Dục AI Lớp 9 (Bài 1 đến 10)",
         category: "Bài giảng",
         type: "PDF",
@@ -235,15 +229,15 @@
       {
         title: "GIÁO ÁN THAM KHẢO",
         category: "Thực hành",
-        type: "Tệp nén (.zip)",
-        desc: "Hướng dẫn từng bước giải quyết các bài toán thực tế.",
+        type: "Thư mục Drive",
+        desc: "Hệ thống giáo án tham khảo phục vụ công tác giảng dạy.",
         link: "https://drive.google.com/drive/folders/1fTKNWKGFxIJU52Zd4tcwDOh72PiGMfDY?usp=sharing"
       },
       {
         title: "Tài liệu học lập trình",
         category: "Thực hành",
-        type: "Tệp nén (.zip)",
-        desc: "Hướng dẫn từng bước giải quyết các bài toán thực tế.",
+        type: "Thư mục Drive",
+        desc: "Hướng dẫn từng bước giải quyết các bài toán lập trình thực tế.",
         link: "https://drive.google.com/drive/folders/1fTKNWKGFxIJU52Zd4tcwDOh72PiGMfDY?usp=sharing"
       }
     ];
@@ -296,8 +290,8 @@
       btn.textContent = document.body.classList.contains('dark-mode') ? "☀️ Chế độ sáng" : "🌙 Chế độ tối";
     }
 
-    // Hiển thị danh sách khi mới mở trang
     renderDocs();
   </script>
+
 </body>
 </html>
