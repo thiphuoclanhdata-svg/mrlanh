@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kho Tài Liệu Học Tập</title>
+  <style>
+    :root {
+      --bg-color: #f4f7fb;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --tag-bg: #eff6ff;
+      --tag-text: #1d4ed8;
+    }
+
+    body.dark-mode {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --border: #334155;
+      --tag-bg: #1e3a8a;
+      --tag-text: #bfdbfe;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding-bottom: 25px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 25px;
+    }
+    .profile h1 { font-size: 1.8rem; color: var(--primary); }
+    .profile p { color: var(--text-sub); font-size: 0.95rem; margin-top: 4px; }
+
+    .theme-btn {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .theme-btn:hover { border-color: var(--primary); }
+
+    /* Thanh tìm kiếm và bộ lọc */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+    }
+    .search-box:focus { border-color: var(--primary); }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Danh sách tài liệu */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .badge {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .file-type {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin-bottom: 18px;
+    }
+    .btn-download {
+      display: inline-block;
+      text-align: center;
+      background: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: var(--primary-hover); }
+
+    footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="profile">
+        <h1>📚 Góc Chia Sẻ Tài Liệu</h1>
+        <p>Tổng hợp bài giảng, đề ôn tập và tài nguyên học tập miễn phí</p>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Chế độ tối</button>
+    </header>
+
+    <div class="controls">
+      <input type="text" class="search-box" id="searchInput" placeholder="🔍 Nhập tên tài liệu hoặc từ khóa cần tìm..." onkeyup="renderDocs()">
+      
+      <div class="filter-tabs" id="filterTabs">
+        <button class="tab-btn active" onclick="setCategory('Tất cả', this)">Tất cả</button>
+        <button class="tab-btn" onclick="setCategory('Bài giảng', this)">Bài giảng</button>
+        <button class="tab-btn" onclick="setCategory('Đề ôn tập', this)">Đề ôn tập</button>
+        <button class="tab-btn" onclick="setCategory('Thực hành', this)">Thực hành</button>
+      </div>
+    </div>
+
+    <div class="grid" id="docGrid"></div>
+
+    <footer>
+      <p>© 2026 - Trang chia sẻ tài liệu học tập cá nhân | Liên hệ: email@example.com</p>
+    </footer>
+  </div>
+
+  <script>
+    // ==========================================
+    // DANH SÁCH TÀI LIỆU (Bạn chỉnh sửa tại đây)
+    // ==========================================
+    const documents = [
+     {
+        title: "Sách Giáo Dục AI Lớp 9 (Bài 1 đến 10)",
+        category: "Bài giảng",
+        type: "PDF",
+        desc: "Tài liệu giáo dục Trí tuệ nhân tạo lớp 9: Ứng dụng AI trong đời sống, đạo đức, trách nhiệm và quy trình chuẩn bị dữ liệu.",
+        link: "https://drive.google.com/file/d/11VyAax8XFDEI9sdQFwzF7tYzLiwNldgC/view?usp=sharing"
+      },
+      {
+        title: "Bộ đề kiểm tra giữa kỳ (Có đáp án chi tiết)",
+        category: "Đề ôn tập",
+        type: "Word (.docx)",
+        desc: "Tổng hợp 5 đề luyện tập bám sát cấu trúc đề thi mới nhất.",
+        link: "#"
+      },
+      {
+        title: "Bài tập thực hành nâng cao & Code mẫu",
+        category: "Thực hành",
+        type: "Tệp nén (.zip)",
+        desc: "Hướng dẫn từng bước giải quyết các bài toán thực tế.",
+        link: "#"
+      }
+    ];
+
+    let currentCategory = "Tất cả";
+
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDocs();
+    }
+
+    function renderDocs() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const grid = document.getElementById('docGrid');
+      grid.innerHTML = "";
+
+      const filtered = documents.filter(doc => {
+        const matchCat = currentCategory === "Tất cả" || doc.category === currentCategory;
+        const matchKey = doc.title.toLowerCase().includes(keyword) || doc.desc.toLowerCase().includes(keyword);
+        return matchCat && matchKey;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "<p style='color: var(--text-sub); grid-column: 1/-1; text-align: center; padding: 30px;'>Không tìm thấy tài liệu phù hợp.</p>";
+        return;
+      }
+
+      filtered.forEach(doc => {
+        grid.innerHTML += `
+          <div class="card">
+            <div>
+              <div class="card-header">
+                <span class="badge">${doc.category}</span>
+                <span class="file-type">${doc.type}</span>
+              </div>
+              <h3>${doc.title}</h3>
+              <p>${doc.desc}</p>
+            </div>
+            <a href="${doc.link}" target="_blank" class="btn-download">📥 Xem / Tải tài liệu</a>
+          </div>
+        `;
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const btn = document.getElementById('themeBtn');
+      btn.textContent = document.body.classList.contains('dark-mode') ? "☀️ Chế độ sáng" : "🌙 Chế độ tối";
+    }
+
+    // Hiển thị danh sách khi mới mở trang
+    renderDocs();
+  </script>
+</body>
+</html>
