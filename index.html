@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kho Tài Liệu Học Tập</title>
+  <title>MR Lành - Chia Sẻ Tài Liệu & Học Lập Trình</title>
   <style>
     :root {
       --bg-color: #f4f7fb;
@@ -15,6 +15,8 @@
       --border: #e2e8f0;
       --tag-bg: #eff6ff;
       --tag-text: #1d4ed8;
+      --code-bg: #1e293b;
+      --code-text: #f8fafc;
     }
 
     body.dark-mode {
@@ -27,6 +29,8 @@
       --border: #334155;
       --tag-bg: #1e3a8a;
       --tag-text: #bfdbfe;
+      --code-bg: #020617;
+      --code-text: #e2e8f0;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +43,7 @@
     }
 
     .container {
-      max-width: 960px;
+      max-width: 1020px;
       margin: 0 auto;
       padding: 30px 20px;
     }
@@ -93,7 +97,7 @@
       flex-wrap: wrap;
     }
     .tab-btn {
-      padding: 6px 14px;
+      padding: 7px 15px;
       border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--card-bg);
@@ -111,7 +115,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
       gap: 20px;
     }
     .card {
@@ -157,19 +161,100 @@
       color: var(--text-sub);
       margin-bottom: 18px;
     }
-    .btn-download {
-      display: inline-block;
+    .btn-download, .btn-lesson {
+      display: block;
+      width: 100%;
       text-align: center;
       background: var(--primary);
       color: #ffffff;
       text-decoration: none;
-      padding: 9px 14px;
+      padding: 10px 14px;
       border-radius: 8px;
       font-size: 0.9rem;
       font-weight: 500;
+      border: none;
+      cursor: pointer;
       transition: background 0.2s;
     }
-    .btn-download:hover { background: var(--primary-hover); }
+    .btn-download:hover, .btn-lesson:hover { background: var(--primary-hover); }
+    .btn-lesson { background: #059669; }
+    .btn-lesson:hover { background: #047857; }
+
+    /* Cửa sổ xem bài học Python chi tiết (Modal) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--card-bg);
+      color: var(--text-main);
+      width: 100%;
+      max-width: 780px;
+      max-height: 88vh;
+      border-radius: 14px;
+      overflow-y: auto;
+      padding: 25px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 15px;
+      margin-bottom: 18px;
+    }
+    .modal-top h2 { color: var(--primary); font-size: 1.35rem; }
+    .close-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .lesson-section { margin-bottom: 18px; }
+    .lesson-section h4 {
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+    .lesson-section ul { padding-left: 20px; color: var(--text-main); }
+    .lesson-section li { margin-bottom: 5px; }
+    .code-wrapper { position: relative; margin-top: 8px; }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .copy-code-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .copy-code-btn:hover { background: rgba(255,255,255,0.3); }
 
     footer {
       margin-top: 50px;
@@ -187,32 +272,247 @@
     <header>
       <div class="profile">
         <h1>📚 MR Lành - Chia Sẻ Tài Liệu</h1>
-        <p>Tổng hợp bài giảng, đề ôn tập và tài nguyên học tập miễn phí</p>
+        <p>Tổng hợp bài giảng, đề ôn tập và khóa học lập trình Python từ cơ bản đến nâng cao</p>
       </div>
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Chế độ tối</button>
     </header>
 
     <div class="controls">
-      <input type="text" class="search-box" id="searchInput" placeholder="🔍 Nhập tên tài liệu hoặc từ khóa cần tìm..." onkeyup="renderDocs()">
+      <input type="text" class="search-box" id="searchInput" placeholder="🔍 Nhập tên tài liệu, bài học Python hoặc từ khóa cần tìm..." onkeyup="renderDocs()">
       
       <div class="filter-tabs" id="filterTabs">
         <button class="tab-btn active" onclick="setCategory('Tất cả', this)">Tất cả</button>
+        <button class="tab-btn" onclick="setCategory('Học Lập Trình Python', this)">🐍 Học Lập Trình Python</button>
         <button class="tab-btn" onclick="setCategory('Bài giảng', this)">Bài giảng</button>
         <button class="tab-btn" onclick="setCategory('Đề ôn tập', this)">Đề ôn tập</button>
         <button class="tab-btn" onclick="setCategory('Thực hành', this)">Thực hành</button>
-        <button class="tab-btn" onclick="setCategory('Học Lập Trình Python', this)">Học Lập Trình Python</button>
       </div>
     </div>
 
     <div class="grid" id="docGrid"></div>
 
     <footer>
-      <p>© 2026 - Trang chia sẻ tài liệu học tập cá nhân</p>
+      <p>© 2026 - Trang chia sẻ tài liệu học tập & Lập trình cá nhân | MR Lành</p>
     </footer>
+  </div>
+
+  <!-- Cửa sổ hiển thị nội dung bài học Python chi tiết -->
+  <div class="modal-overlay" id="lessonModal" onclick="closeModalOnBg(event)">
+    <div class="modal-box">
+      <div class="modal-top">
+        <div>
+          <span class="badge" id="modalLevel">Cơ bản</span>
+          <h2 id="modalTitle" style="margin-top: 6px;">Tiêu đề bài học</h2>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕ Đóng</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
   </div>
 
   <script>
     const documents = [
+      // ========================================================
+      // PHẦN 1: KHÓA HỌC LẬP TRÌNH PYTHON TỪ CƠ BẢN ĐẾN NÂNG CAO
+      // ========================================================
+      {
+        title: "Bài 1: Làm quen Python, Biến, Kiểu dữ liệu & Nhập/Xuất",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 1 • Cơ bản",
+        desc: "Cấu trúc chương trình đầu tiên, quy tắc đặt tên biến, các kiểu dữ liệu int, float, str, bool và lệnh input(), print().",
+        lesson: {
+          theory: [
+            "<b>Hàm xuất print():</b> In dữ liệu ra màn hình. Hỗ trợ tham số <code>sep</code> (ký tự ngăn cách) và <code>end</code> (ký tự kết thúc dòng).",
+            "<b>Hàm nhập input():</b> Luôn trả về kiểu chuỗi (<code>str</code>). Muốn tính toán số học phải ép kiểu bằng <code>int()</code> hoặc <code>float()</code>.",
+            "<b>Các phép toán đặc biệt:</b> Chia lấy phần nguyên (<code>//</code>), chia lấy phần dư (<code>%</code>), lũy thừa (<code>**</code>)."
+          ],
+          code: `# Nhập chiều dài và chiều rộng hình chữ nhật
+a = float(input("Nhập chiều dài: "))
+b = float(input("Nhập chiều rộng: "))
+
+chu_vi = (a + b) * 2
+dien_tich = a * b
+
+print(f"Chu vi = {chu_vi}, Diện tích = {dien_tich:.2f}")`,
+          exercise: "Viết chương trình nhập vào số giây tổng cộng N (ví dụ 3665), quy đổi ra định dạng Giờ : Phút : Giây."
+        }
+      },
+      {
+        title: "Bài 2: Cấu trúc rẽ nhánh (if - elif - else) & Toán tử logic",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 2 • Cơ bản",
+        desc: "Cách viết điều kiện rẽ nhánh, biểu thức so sánh, kết hợp điều kiện với and, or, not và toán tử ba ngôi.",
+        lesson: {
+          theory: [
+            "Python dùng <b>thụt đầu dòng (4 dấu cách hoặc 1 Tab)</b> để phân chia khối lệnh thay cho dấu ngoặc nhọn.",
+            "Cấu trúc đầy đủ: <code>if điều_kiện_1: ... elif điều_kiện_2: ... else: ...</code>",
+            "<b>Biểu thức điều kiện rút gọn:</b> <code>kq = 'Chẵn' if n % 2 == 0 else 'Lẻ'</code>."
+          ],
+          code: `# Kiểm tra năm nhuận dương lịch
+nam = int(input("Nhập năm cần kiểm tra: "))
+
+if (nam % 400 == 0) or (nam % 4 == 0 and nam % 100 != 0):
+    print(f"Năm {nam} là năm nhuận.")
+else:
+    print(f"Năm {nam} không phải năm nhuận.")`,
+          exercise: "Nhập vào 3 cạnh a, b, c. Kiểm tra xem 3 cạnh có tạo thành tam giác không, nếu có thì là tam giác gì (đều, cân, vuông, thường)?"
+        }
+      },
+      {
+        title: "Bài 3: Vòng lặp (for, while) & Kỹ thuật đặt lính canh, cộng dồn",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 3 • Cơ bản",
+        desc: "Sử dụng hàm range(), vòng lặp vô tận while, câu lệnh điều khiển break, continue và bài toán đếm/tính tổng.",
+        lesson: {
+          theory: [
+            "<b>Hàm range(start, stop, step):</b> Sinh dãy số từ <code>start</code> đến <code>stop - 1</code> với bước nhảy <code>step</code>.",
+            "<b>Vòng lặp while:</b> Dùng khi chưa biết trước số lần lặp (ví dụ: tách từng chữ số của một số nguyên N).",
+            "<b>break</b> thoát hẳn khỏi vòng lặp; <b>continue</b> bỏ qua lượt hiện tại để sang lượt tiếp theo."
+          ],
+          code: `# Tính tổng các chữ số của số nguyên dương N
+n = int(input("Nhập số nguyên dương N: "))
+tong = 0
+tam = n
+
+while tam > 0:
+    chu_so = tam % 10   # Lấy chữ số hàng đơn vị
+    tong += chu_so      # Cộng dồn vào tổng
+    tam //= 10          # Bỏ chữ số hàng đơn vị
+
+print(f"Tổng các chữ số của {n} là: {tong}")`,
+          exercise: "Nhập số nguyên dương N. Kiểm tra xem N có phải là số nguyên tố hay không?"
+        }
+      },
+      {
+        title: "Bài 4: Xử lý Xâu ký tự (String) & Kỹ thuật cắt lát (Slicing)",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 4 • Trung bình",
+        desc: "Chỉ số âm/dương trong xâu, kỹ thuật Slicing [start:end:step], chuẩn hóa xâu và các hàm xử lý chuỗi thông dụng.",
+        lesson: {
+          theory: [
+            "<b>Kỹ thuật Slicing:</b> <code>s[::-1]</code> giúp đảo ngược xâu cực nhanh chỉ trong 1 dòng.",
+            "<b>Các phương thức quan trọng:</b> <code>split()</code> (tách từ), <code>join()</code> (nối từ), <code>strip()</code> (xóa khoảng trắng thừa 2 đầu), <code>replace()</code> (thay thế).",
+            "<b>Kiểm tra ký tự:</b> <code>isalpha()</code> (chữ cái), <code>isdigit()</code> (chữ số), <code>upper()</code> / <code>lower()</code>."
+          ],
+          code: `# Chuẩn hóa họ tên và kiểm tra xâu đối xứng
+ho_ten = "   nguyễn   văn   an   "
+chuan_hoa = " ".join(ho_ten.split()).title()
+print("Tên chuẩn:", chuan_hoa)
+
+s = "madam"
+if s == s[::-1]:
+    print(f"'{s}' là xâu đối xứng (Palindrome)")`,
+          exercise: "Nhập một xâu bất kỳ gồm chữ và số. Tính tổng tất cả các chữ số xuất hiện trong xâu đó (Ví dụ: 'a12b3' -> 1+2+3 = 6)."
+        }
+      },
+      {
+        title: "Bài 5: Danh sách (List), Tuple & List Comprehension",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 5 • Trung bình",
+        desc: "Thao tác mảng 1 chiều với List, thêm/xóa/sắp xếp phần tử và cách viết List Comprehension ngắn gọn chuẩn Pythonic.",
+        lesson: {
+          theory: [
+            "<b>Thao tác cơ bản:</b> <code>append(x)</code> (thêm cuối), <code>pop()</code> (xóa cuối), <code>sort()</code> (sắp xếp tăng dần), <code>sort(reverse=True)</code> (giảm dần).",
+            "<b>Hàm tổng hợp:</b> <code>len(a)</code>, <code>sum(a)</code>, <code>max(a)</code>, <code>min(a)</code>.",
+            "<b>List Comprehension:</b> Tạo danh sách mới trên 1 dòng: <code>chan = [x for x in a if x % 2 == 0]</code>."
+          ],
+          code: `# Nhập dãy số trên 1 dòng và lọc số nguyên tố
+a = list(map(int, input("Nhập dãy số cách nhau dấu cách: ").split()))
+
+def la_snt(n):
+    if n < 2: return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0: return False
+    return True
+
+ds_snt = [x for x in a if la_snt(x)]
+print("Các số nguyên tố trong dãy:", ds_snt)`,
+          exercise: "Cho danh sách N số nguyên. Tìm phần tử lớn thứ hai trong danh sách (không tính các giá trị trùng với số lớn nhất)."
+        }
+      },
+      {
+        title: "Bài 6: Tập hợp (Set) & Từ điển (Dictionary) - Tối ưu tốc độ",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 6 • Trung bình - Khá",
+        desc: "Ứng dụng Set loại bỏ phần tử trùng lặp và Dictionary để đếm tần suất xuất hiện với độ phức tạp O(1).",
+        lesson: {
+          theory: [
+            "<b>Set (Tập hợp):</b> Chứa các phần tử duy nhất (không trùng lặp), hỗ trợ phép giao (<code>&</code>), hợp (<code>|</code>), hiệu (<code>-</code>).",
+            "<b>Dictionary (Từ điển):</b> Lưu trữ cặp <code>{key: value}</code>. Tra cứu cực nhanh, là vũ khí tối thượng giải các bài toán đếm tần suất trong đề thi HSG."
+          ],
+          code: `# Đếm số lần xuất hiện của từng phần tử trong mảng
+a = [4, 2, 4, 5, 2, 4, 9]
+dem = {}
+
+for x in a:
+    dem[x] = dem.get(x, 0) + 1
+
+for k, v in dem.items():
+    print(f"Số {k} xuất hiện {v} lần")`,
+          exercise: "Cho mảng gồm N phần tử. Tìm phần tử xuất hiện nhiều nhất trong mảng (nếu có nhiều số cùng tần suất thì in số nhỏ nhất)."
+        }
+      },
+      {
+        title: "Bài 7: Hàm (Function), Đệ quy & Xử lý Tệp (File I/O) thi HSG",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 7 • Nâng cao",
+        desc: "Xây dựng chương trình con, tư duy đệ quy quay lui và chuẩn đọc/ghi file .INP / .OUT trong các kỳ thi Học sinh giỏi.",
+        lesson: {
+          theory: [
+            "<b>Đọc/Ghi tệp chuẩn thi HSG:</b> Sử dụng <code>sys.stdin = open('TENBAI.INP', 'r')</code> và <code>sys.stdout = open('TENBAI.OUT', 'w')</code> giúp giữ nguyên lệnh <code>input()</code> và <code>print()</code> quen thuộc.",
+            "<b>Đệ quy (Recursion):</b> Hàm tự gọi lại chính nó với bài toán nhỏ hơn kèm điều kiện dừng rõ ràng."
+          ],
+          code: `import sys
+# Mẫu đọc ghi file chuẩn kỳ thi Học sinh giỏi
+# sys.stdin = open("TONG.INP", "r")
+# sys.stdout = open("TONG.OUT", "w")
+
+def ucln(a, b):
+    if b == 0:
+        return a
+    return ucln(b, a % b)
+
+a, b = map(int, input("Nhập 2 số a, b: ").split())
+print("Ước chung lớn nhất:", ucln(a, b))`,
+          exercise: "Sử dụng đệ quy quay lui để liệt kê tất cả các dãy nhị phân có độ dài N."
+        }
+      },
+      {
+        title: "Bài 8: Thuật toán nâng cao (Sàng nguyên tố, Tìm kiếm nhị phân, QHĐ)",
+        category: "Học Lập Trình Python",
+        type: "Mức độ 8 • Chuyên sâu / HSG",
+        desc: "Các thuật toán tối ưu thời gian chạy dưới 1 giây: Sàng Eratosthenes, Mảng cộng dồn, Tìm kiếm nhị phân và Quy hoạch động cơ bản.",
+        lesson: {
+          theory: [
+            "<b>Sàng nguyên tố Eratosthenes:</b> Tìm toàn bộ số nguyên tố đến 10^6 chỉ trong 0.1 giây.",
+            "<b>Mảng cộng dồn (Prefix Sum):</b> Tính tổng đoạn từ L đến R trong O(1) bằng công thức <code>P[R] - P[L-1]</code>.",
+            "<b>Tìm kiếm nhị phân (Binary Search):</b> Tìm kiếm trên dãy đã sắp xếp với độ phức tạp O(log N) qua thư viện <code>bisect</code>."
+          ],
+          code: `# Sàng số nguyên tố Eratosthenes đến N
+def sang_nguyen_to(n):
+    prime = [True] * (n + 1)
+    prime[0] = prime[1] = False
+    for i in range(2, int(n**0.5) + 1):
+        if prime[i]:
+            for j in range(i * i, n + 1, i):
+                prime[j] = False
+    return [i for i in range(2, n + 1) if prime[i]]
+
+print("Các SNT <= 50:", sang_nguyen_to(50))`,
+          exercise: "Cho dãy N số nguyên (N <= 10^5) và Q truy vấn. Mỗi truy vấn cho cặp (L, R), hãy in ra tổng các phần tử từ vị trí L đến R."
+        }
+      },
+
+      // ========================================================
+      // PHẦN 2: KHO TÀI LIỆU GOOGLE DRIVE CỦA BẠN
+      // ========================================================
+      {
+        title: "Tài liệu học lập trình (Kho Drive tổng hợp)",
+        category: "Học Lập Trình Python",
+        type: "Thư mục Drive",
+        desc: "Kho lưu trữ các tệp bài tập, giáo trình và tài nguyên lập trình bổ trợ trên Google Drive.",
+        link: "https://drive.google.com/drive/folders/1fTKNWKGFxIJU52Zd4tcwDOh72PiGMfDY?usp=sharing"
+      },
       {
         title: "SÁCH THAM KHẢO",
         category: "Đề ôn tập",
@@ -239,13 +539,6 @@
         category: "Thực hành",
         type: "Thư mục Drive",
         desc: "Hệ thống giáo án tham khảo phục vụ công tác giảng dạy.",
-        link: "https://drive.google.com/drive/folders/1fTKNWKGFxIJU52Zd4tcwDOh72PiGMfDY?usp=sharing"
-      },
-      {
-        title: "Tài liệu học lập trình",
-        category: "Học Lập Trình Python",
-        type: "Thư mục Drive",
-        desc: "Hướng dẫn từng bước giải quyết các bài toán lập trình thực tế.",
         link: "https://drive.google.com/drive/folders/1fTKNWKGFxIJU52Zd4tcwDOh72PiGMfDY?usp=sharing"
       }
     ];
@@ -275,7 +568,13 @@
         return;
       }
 
-      filtered.forEach(doc => {
+      filtered.forEach((doc, index) => {
+        // Tìm vị trí thực trong mảng gốc để mở đúng bài học
+        const originalIndex = documents.indexOf(doc);
+        const actionBtn = doc.lesson
+          ? `<button class="btn-lesson" onclick="openLesson(${originalIndex})">📖 Đọc bài học & Code mẫu</button>`
+          : `<a href="${doc.link}" target="_blank" class="btn-download">📥 Xem / Tải tài liệu</a>`;
+
         grid.innerHTML += `
           <div class="card">
             <div>
@@ -286,10 +585,58 @@
               <h3>${doc.title}</h3>
               <p>${doc.desc}</p>
             </div>
-            <a href="${doc.link}" target="_blank" class="btn-download">📥 Xem / Tải tài liệu</a>
+            ${actionBtn}
           </div>
         `;
       });
+    }
+
+    function openLesson(idx) {
+      const doc = documents[idx];
+      if (!doc || !doc.lesson) return;
+
+      document.getElementById('modalLevel').textContent = doc.type;
+      document.getElementById('modalTitle').textContent = doc.title;
+
+      const theoryHtml = doc.lesson.theory.map(item => `<li>${item}</li>`).join('');
+      const escapedCode = doc.lesson.code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+      document.getElementById('modalBody').innerHTML = `
+        <div class="lesson-section">
+          <h4>1. Kiến thức trọng tâm</h4>
+          <ul>${theoryHtml}</ul>
+        </div>
+        <div class="lesson-section">
+          <h4>2. Code mẫu minh họa (Python 3)</h4>
+          <div class="code-wrapper">
+            <button class="copy-code-btn" onclick="copyCode(this)">📋 Sao chép code</button>
+            <pre><code>${escapedCode}</code></pre>
+          </div>
+        </div>
+        <div class="lesson-section">
+          <h4>3. Bài tập tự luyện</h4>
+          <p style="background: var(--tag-bg); color: var(--tag-text); padding: 12px 15px; border-radius: 8px; font-weight: 500;">
+            💡 ${doc.lesson.exercise}
+          </p>
+        </div>
+      `;
+
+      document.getElementById('lessonModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('lessonModal').classList.remove('open');
+    }
+
+    function closeModalOnBg(e) {
+      if (e.target.id === 'lessonModal') closeModal();
+    }
+
+    function copyCode(btn) {
+      const codeText = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(codeText);
+      btn.textContent = "✅ Đã chép!";
+      setTimeout(() => { btn.textContent = "📋 Sao chép code"; }, 2000);
     }
 
     function toggleTheme() {
