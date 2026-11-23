@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MR Lành - Chia Sẻ Tài Liệu & Học Lập Trình</title>
+  <title>MR Lành - Chia Sẻ Tài Liệu & Học Lập Trình Python Chuyên Sâu</title>
   <style>
     :root {
       --bg-color: #f4f7fb;
@@ -15,12 +15,15 @@
       --border: #e2e8f0;
       --tag-bg: #eff6ff;
       --tag-text: #1d4ed8;
-      --code-bg: #1e293b;
+      --code-bg: #0f172a;
       --code-text: #f8fafc;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+      --accent-purple: #7c3aed;
     }
 
     body.dark-mode {
-      --bg-color: #0f172a;
+      --bg-color: #0b1120;
       --card-bg: #1e293b;
       --text-main: #f1f5f9;
       --text-sub: #94a3b8;
@@ -35,15 +38,15 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
-      line-height: 1.6;
+      line-height: 1.65;
       transition: background-color 0.3s, color 0.3s;
     }
 
     .container {
-      max-width: 1020px;
+      max-width: 1080px;
       margin: 0 auto;
       padding: 30px 20px;
     }
@@ -58,7 +61,7 @@
       border-bottom: 2px solid var(--border);
       margin-bottom: 25px;
     }
-    .profile h1 { font-size: 1.8rem; color: var(--primary); }
+    .profile h1 { font-size: 1.85rem; color: var(--primary); }
     .profile p { color: var(--text-sub); font-size: 0.95rem; margin-top: 4px; }
 
     .theme-btn {
@@ -81,7 +84,7 @@
     }
     .search-box {
       width: 100%;
-      padding: 12px 16px;
+      padding: 13px 18px;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--card-bg);
@@ -97,14 +100,14 @@
       flex-wrap: wrap;
     }
     .tab-btn {
-      padding: 7px 15px;
+      padding: 8px 16px;
       border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--card-bg);
       color: var(--text-sub);
       cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.92rem;
+      font-weight: 600;
       transition: all 0.2s;
     }
     .tab-btn.active, .tab-btn:hover {
@@ -115,7 +118,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
     }
     .card {
@@ -130,29 +133,30 @@
     }
     .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 8px;
     }
     .badge {
       background: var(--tag-bg);
       color: var(--tag-text);
       padding: 3px 10px;
       border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
     }
     .file-type {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-sub);
       font-weight: 600;
     }
     .card h3 {
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       margin-bottom: 8px;
       color: var(--text-main);
     }
@@ -171,90 +175,177 @@
       padding: 10px 14px;
       border-radius: 8px;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 600;
       border: none;
       cursor: pointer;
       transition: background 0.2s;
     }
-    .btn-download:hover, .btn-lesson:hover { background: var(--primary-hover); }
-    .btn-lesson { background: #059669; }
+    .btn-download:hover { background: var(--primary-hover); }
+    .btn-lesson { background: var(--accent-green); }
     .btn-lesson:hover { background: #047857; }
 
-    /* Cửa sổ xem bài học Python chi tiết (Modal) */
+    /* Modal Học Lập Trình Chuyên Sâu */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.72);
       z-index: 1000;
       justify-content: center;
       align-items: center;
-      padding: 15px;
+      padding: 12px;
     }
     .modal-overlay.open { display: flex; }
     .modal-box {
       background: var(--card-bg);
       color: var(--text-main);
       width: 100%;
-      max-width: 780px;
-      max-height: 88vh;
+      max-width: 920px;
+      height: 90vh;
       border-radius: 14px;
-      overflow-y: auto;
-      padding: 25px;
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--border);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+      overflow: hidden;
     }
     .modal-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 15px;
+      padding: 18px 24px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 15px;
-      margin-bottom: 18px;
+      background: var(--card-bg);
     }
-    .modal-top h2 { color: var(--primary); font-size: 1.35rem; }
+    .modal-top h2 { color: var(--primary); font-size: 1.28rem; margin-top: 4px; }
     .close-btn {
       background: #ef4444;
       color: white;
       border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 700;
+      flex-shrink: 0;
     }
-    .lesson-section { margin-bottom: 18px; }
-    .lesson-section h4 {
+
+    /* Thanh Tab bên trong bài học */
+    .lesson-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 12px 24px;
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+    .ltab-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .ltab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .modal-content-area {
+      padding: 22px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .theory-box {
+      background: var(--bg-color);
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+    code {
+      background: rgba(37, 99, 235, 0.12);
       color: var(--primary);
-      margin-bottom: 6px;
-      font-size: 1.05rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', monospace;
+      font-size: 0.88em;
     }
-    .lesson-section ul { padding-left: 20px; color: var(--text-main); }
-    .lesson-section li { margin-bottom: 5px; }
-    .code-wrapper { position: relative; margin-top: 8px; }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    .code-wrapper { position: relative; margin: 10px 0 14px 0; }
     pre {
       background: var(--code-bg);
       color: var(--code-text);
-      padding: 15px;
+      padding: 14px 16px;
       border-radius: 8px;
       overflow-x: auto;
       font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.5;
     }
     .copy-code-btn {
       position: absolute;
       top: 8px;
       right: 8px;
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.16);
       color: #fff;
       border: 1px solid rgba(255,255,255,0.3);
       padding: 4px 10px;
       border-radius: 5px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       cursor: pointer;
     }
     .copy-code-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* Thẻ bài tập */
+    .ex-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      background: var(--bg-color);
+    }
+    .ex-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+    }
+    .ans-toggle {
+      margin-top: 8px;
+      background: var(--card-bg);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .ans-toggle:hover {
+      background: var(--accent-green);
+      color: #fff;
+    }
+    .ans-content {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+    }
+    .ans-content.show { display: block; }
 
     footer {
       margin-top: 50px;
@@ -271,18 +362,18 @@
   <div class="container">
     <header>
       <div class="profile">
-        <h1>📚 MR Lành - Chia Sẻ Tài Liệu</h1>
-        <p>Tổng hợp bài giảng, đề ôn tập và khóa học lập trình Python từ cơ bản đến nâng cao</p>
+        <h1>📚 MR Lành - Chia Sẻ Tài Liệu & Học Lập Trình</h1>
+        <p>Hệ thống giáo trình Python toàn diện (Lý thuyết • Ví dụ • 480+ Bài tập thực hành) & Tài nguyên giảng dạy</p>
       </div>
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Chế độ tối</button>
     </header>
 
     <div class="controls">
-      <input type="text" class="search-box" id="searchInput" placeholder="🔍 Nhập tên tài liệu, bài học Python hoặc từ khóa cần tìm..." onkeyup="renderDocs()">
+      <input type="text" class="search-box" id="searchInput" placeholder="🔍 Nhập tên chuyên đề, bài học Python hoặc tài liệu cần tìm..." onkeyup="renderDocs()">
       
       <div class="filter-tabs" id="filterTabs">
         <button class="tab-btn active" onclick="setCategory('Tất cả', this)">Tất cả</button>
-        <button class="tab-btn" onclick="setCategory('Học Lập Trình Python', this)">🐍 Học Lập Trình Python</button>
+        <button class="tab-btn" onclick="setCategory('Học Lập Trình Python', this)">🐍 Học Lập Trình Python (Full 8 Chuyên đề)</button>
         <button class="tab-btn" onclick="setCategory('Bài giảng', this)">Bài giảng</button>
         <button class="tab-btn" onclick="setCategory('Đề ôn tập', this)">Đề ôn tập</button>
         <button class="tab-btn" onclick="setCategory('Thực hành', this)">Thực hành</button>
@@ -292,220 +383,36 @@
     <div class="grid" id="docGrid"></div>
 
     <footer>
-      <p>© 2026 - Trang chia sẻ tài liệu học tập & Lập trình cá nhân | MR Lành</p>
+      <p>© 2026 - Trang chia sẻ tài liệu học tập & Lập trình Python chuyên sâu | MR Lành</p>
     </footer>
   </div>
 
-  <!-- Cửa sổ hiển thị nội dung bài học Python chi tiết -->
+  <!-- Modal Bài học Python Chuyên Sâu -->
   <div class="modal-overlay" id="lessonModal" onclick="closeModalOnBg(event)">
     <div class="modal-box">
       <div class="modal-top">
         <div>
-          <span class="badge" id="modalLevel">Cơ bản</span>
-          <h2 id="modalTitle" style="margin-top: 6px;">Tiêu đề bài học</h2>
+          <span class="badge" id="modalLevel">Chuyên đề</span>
+          <h2 id="modalTitle">Tiêu đề bài học</h2>
         </div>
         <button class="close-btn" onclick="closeModal()">✕ Đóng</button>
       </div>
-      <div id="modalBody"></div>
+
+      <div class="lesson-tabs" id="lessonTabs">
+        <button class="ltab-btn active" onclick="switchLessonTab('theory', this)">📘 Lý thuyết & Ví dụ</button>
+        <button class="ltab-btn" onclick="switchLessonTab('trace', this)">✍️ Dạng 1: Chạy tay (20 bài)</button>
+        <button class="ltab-btn" onclick="switchLessonTab('algo', this)">🔄 Dạng 2: Thuật toán → Code (20 bài)</button>
+        <button class="ltab-btn" onclick="switchLessonTab('coding', this)">💻 Dạng 3: Lập trình tự luyện (20 bài)</button>
+      </div>
+
+      <div class="modal-content-area" id="modalBody"></div>
     </div>
   </div>
 
   <script>
-    const documents = [
-      // ========================================================
-      // PHẦN 1: KHÓA HỌC LẬP TRÌNH PYTHON TỪ CƠ BẢN ĐẾN NÂNG CAO
-      // ========================================================
-      {
-        title: "Bài 1: Làm quen Python, Biến, Kiểu dữ liệu & Nhập/Xuất",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 1 • Cơ bản",
-        desc: "Cấu trúc chương trình đầu tiên, quy tắc đặt tên biến, các kiểu dữ liệu int, float, str, bool và lệnh input(), print().",
-        lesson: {
-          theory: [
-            "<b>Hàm xuất print():</b> In dữ liệu ra màn hình. Hỗ trợ tham số <code>sep</code> (ký tự ngăn cách) và <code>end</code> (ký tự kết thúc dòng).",
-            "<b>Hàm nhập input():</b> Luôn trả về kiểu chuỗi (<code>str</code>). Muốn tính toán số học phải ép kiểu bằng <code>int()</code> hoặc <code>float()</code>.",
-            "<b>Các phép toán đặc biệt:</b> Chia lấy phần nguyên (<code>//</code>), chia lấy phần dư (<code>%</code>), lũy thừa (<code>**</code>)."
-          ],
-          code: `# Nhập chiều dài và chiều rộng hình chữ nhật
-a = float(input("Nhập chiều dài: "))
-b = float(input("Nhập chiều rộng: "))
+    const pythonTopics = [{"id": "bai1", "title": "Chuyên đề 1: Nhập/Xuất, Biến, Kiểu dữ liệu & Biểu thức số học", "level": "Cơ bản • Chuyên đề 1", "desc": "Kiến trúc chương trình Python, biến và tham chiếu bộ nhớ, kiểu int/float/str/bool, các phép toán chia nguyên, chia dư, lũy thừa và định dạng xuất dữ liệu.", "theory": ["<b>1. Biến và Kiểu dữ liệu động:</b> Trong Python, biến không cần khai báo kiểu trước. Khi gán <code>x = 10</code>, Python tạo đối tượng số nguyên 10 trong bộ nhớ và cho biến <code>x</code> tham chiếu tới. Các kiểu cơ bản: <code>int</code> (số nguyên độ chính xác tùy ý), <code>float</code> (số thực dấu phẩy động 64-bit), <code>str</code> (xâu ký tự bất biến), <code>bool</code> (<code>True</code>/<code>False</code>).", "<b>2. Nhập dữ liệu chuẩn với input() và map():</b> Hàm <code>input()</code> luôn đọc cả dòng dưới dạng chuỗi. Để nhập nhiều số nguyên trên một dòng cách nhau bởi dấu cách, dùng kỹ thuật: <code>a, b, c = map(int, input().split())</code>.", "<b>3. Xuất dữ liệu nâng cao với print() và f-string:</b><br>• <code>sep='...'</code>: Ký tự ngăn cách giữa các đối số (mặc định là dấu cách).<br>• <code>end='...'</code>: Ký tự kết thúc sau khi in (mặc định là xuống dòng <code>\\n</code>).<br>• <code>f'{x:.3f}'</code>: Làm tròn số thực <code>x</code> đến 3 chữ số thập phân.", "<b>4. Thứ tự ưu tiên toán tử số học:</b> Ngoặc đơn <code>()</code> → Lũy thừa <code>**</code> (tính từ phải sang trái) → Đổi dấu <code>+x, -x</code> → Nhân, chia thực, chia nguyên, chia dư (<code>*, /, //, %</code> tính từ trái sang phải) → Cộng, trừ (<code>+, -</code>)."], "examples": [{"name": "Ví dụ 1: Tách chữ số hàng trăm, chục, đơn vị của số có 3 chữ số", "code": "n = int(input(\"Nhập số nguyên dương có 3 chữ số: \"))\ntram = n // 100\nchuc = (n // 10) % 10\ndon_vi = n % 10\nprint(f\"Trăm: {tram}, Chục: {chuc}, Đơn vị: {don_vi}\")\nprint(\"Số đảo ngược:\", don_vi * 100 + chuc * 10 + tram)", "explain": "Phép chia lấy nguyên <code>// 100</code> lấy phần trăm; chia nguyên cho 10 rồi chia dư cho 10 lấy chữ số hàng chục; chia dư cho 10 lấy chữ số tận cùng."}, {"name": "Ví dụ 2: Tính khoảng cách Euclid giữa hai điểm A(x1, y1) và B(x2, y2)", "code": "import math\nx1, y1 = map(float, input(\"Nhập tọa độ A: \").split())\nx2, y2 = map(float, input(\"Nhập tọa độ B: \").split())\nd = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)\nprint(f\"Khoảng cách AB = {d:.4f}\")", "explain": "Sử dụng thư viện <code>math.sqrt()</code> hoặc lũy thừa <code>** 0.5</code> để tính căn bậc hai, kết hợp định dạng <code>:.4f</code>."}], "trace": [["x = 17; y = 5; print(x // y, x % y)", "3 2 (17 chia 5 được thương nguyên là 3, dư 2)"], ["a = 2 ** 3 ** 2; print(a)", "512 (Lũy thừa kết hợp phải sang trái: 3**2 = 9, sau đó 2**9 = 512)"], ["print(10, 20, 30, sep='-', end='!')", "10-20-30!"], ["a = '15'; b = '25'; print(a + b, int(a) + int(b))", "1525 40 (Cộng chuỗi là ghép xâu, cộng số nguyên là tính tổng)"], ["x = -17; y = 5; print(x // y, x % y)", "-4 3 (Python làm tròn xuống âm vô cực: -17 = -4*5 + 3)"], ["a, b = 4, 9; a, b = b, a + b; print(a, b)", "9 13 (Gán đồng thời: a nhận giá trị cũ của b là 9, b nhận 4+9=13)"], ["print(round(2.5), round(3.5))", "2 4 (Python dùng làm tròn chẵn - Banker's rounding)"], ["x = 7 / 2; y = 7 // 2; print(type(x).__name__, type(y).__name__)", "float int"], ["s = 'Py' * 3 + '!'; print(len(s), s)", "7 PyPyPy!"], ["a = 5; a += 3 * 2; print(a)", "11 (Tính 3*2 = 6 trước, sau đó a = 5 + 6 = 11)"], ["print(10 > 5 == True)", "False (So sánh chuỗi: 10 > 5 and 5 == True -> True and False -> False)"], ["print(bool(0), bool(-1), bool(''), bool('0'))", "False True False True"], ["x = 1234; print((x // 100) % 10)", "2 (1234 // 100 = 12; 12 % 10 = 2)"], ["a = 10; b = 3; print(f'{a/b:.1f}')", "3.3"], ["print(15 % 4 + 15 // 4)", "6 (3 + 3 = 6)"], ["x = 3; y = 4; z = (x**2 + y**2)**0.5; print(z)", "5.0"], ["print('A', 'B', sep='\\n')", "A (dòng 1) và B (dòng 2)"], ["a = 20; b = a; a = 30; print(b)", "20 (b vẫn tham chiếu tới đối tượng 20 ban đầu)"], ["print(100 // 10 // 3)", "3 (Từ trái sang phải: 100 // 10 = 10; 10 // 3 = 3)"], ["x = int(9.99) + float(2); print(x)", "11.0 (9 + 2.0 = 11.0)"]], "algo": [["Thuật toán hoán đổi giá trị 2 biến A và B không dùng biến phụ: B1: Nhập A, B. B2: A ← A + B. B3: B ← A - B. B4: A ← A - B. B5: Xuất A, B.", "a, b = map(int, input().split())\na = a + b\nb = a - b\na = a - b\nprint(a, b)"], ["Thuật toán tính diện tích tam giác theo công thức Heron: B1: Nhập 3 cạnh a, b, c. B2: p ← (a + b + c) / 2. B3: S ← căn_bậc_2(p*(p-a)*(p-b)*(p-c)). B4: In S làm tròn 2 chữ số.", "import math\na, b, c = map(float, input().split())\np = (a + b + c) / 2\ns = math.sqrt(p * (p - a) * (p - b) * (p - c))\nprint(f'{s:.2f}')"], ["Thuật toán quy đổi N giây sang Giờ, Phút, Giây: B1: Nhập N. B2: H ← N chia nguyên 3600. B3: M ← (N chia dư 3600) chia nguyên 60. B4: S ← N chia dư 60. B5: Xuất H:M:S.", "n = int(input())\nh = n // 3600\nm = (n % 3600) // 60\ns = n % 60\nprint(f'{h}:{m}:{s}')"], ["Thuật toán tính tổng cấp số cộng từ 1 đến N: B1: Nhập N. B2: S ← N * (N + 1) chia nguyên 2. B3: In S.", "n = int(input())\ns = n * (n + 1) // 2\nprint(s)"], ["Thuật toán tìm số lượng tờ tiền ít nhất (mệnh giá 50, 20, 10, 1) để đổi số tiền T: B1: Nhập T. B2: Tính lần lượt số tờ mỗi loại bằng chia nguyên và cập nhật phần dư.", "t = int(input())\nt50 = t // 50; t %= 50\nt20 = t // 20; t %= 20\nt10 = t // 10; t %= 10\nprint(t50, t20, t10, t)"], ["Thuật toán tính vận tốc chạm đất của vật rơi tự do từ độ cao h (g = 9.8): B1: Nhập h. B2: v ← căn_bậc_2(2 * 9.8 * h). B3: In v.", "import math\nh = float(input())\nv = math.sqrt(2 * 9.8 * h)\nprint(f'{v:.2f}')"], ["Thuật toán tính tổng các số chẵn từ 2 đến 2N: B1: Nhập N. B2: S ← N * (N + 1). B3: In S.", "n = int(input())\nprint(n * (n + 1))"], ["Thuật toán tính điểm trung bình 3 môn Toán (hệ số 2), Văn (hệ số 2), Anh (hệ số 1): B1: Nhập t, v, a. B2: dtb ← (t*2 + v*2 + a)/5. B3: In dtb.", "t, v, a = map(float, input().split())\ndtb = (t * 2 + v * 2 + a) / 5\nprint(f'{dtb:.2f}')"], ["Thuật toán tính chu vi và diện tích hình tròn bán kính R (pi = 3.14159): B1: Nhập R. B2: C ← 2*pi*R; S ← pi*R^2. B3: In C, S.", "r = float(input())\npi = 3.14159\nprint(f'{2*pi*r:.2f} {pi*r*r:.2f}')"], ["Thuật toán tìm chữ số hàng chục của số nguyên dương N (N >= 10): B1: Nhập N. B2: kq ← (N // 10) % 10. B3: In kq.", "n = int(input())\nprint((n // 10) % 10)"], ["Thuật toán tính lãi kép sau t năm với vốn P, lãi suất r%/năm: B1: Nhập P, r, t. B2: A ← P * (1 + r/100)^t. B3: In A.", "p, r, t = map(float, input().split())\na = p * ((1 + r / 100) ** t)\nprint(f'{a:.2f}')"], ["Thuật toán chuyển nhiệt độ từ độ C sang độ F: B1: Nhập C. B2: F ← C * 1.8 + 32. B3: In F.", "c = float(input())\nprint(c * 1.8 + 32)"], ["Thuật toán tìm số bàn học tối thiểu cho 3 lớp có a, b, c học sinh (mỗi bàn tối đa 2 bạn): B1: Nhập a, b, c. B2: ban ← (a+1)//2 + (b+1)//2 + (c+1)//2. B3: In ban.", "a, b, c = map(int, input().split())\nprint((a + 1) // 2 + (b + 1) // 2 + (c + 1) // 2)"], ["Thuật toán tính trung bình cộng và trung bình nhân của 2 số dương a, b.", "import math\na, b = map(float, input().split())\nprint((a + b) / 2, math.sqrt(a * b))"], ["Thuật toán tính diện tích hình thang biết đáy lớn a, đáy nhỏ b, chiều cao h.", "a, b, h = map(float, input().split())\nprint((a + b) * h / 2)"], ["Thuật toán tìm số nguyên lớn nhất không vượt quá a/b và số nguyên nhỏ nhất không nhỏ hơn a/b (a, b > 0).", "a, b = map(int, input().split())\nprint(a // b, (a + b - 1) // b)"], ["Thuật toán tính tổng bình phương từ 1^2 đến N^2 bằng công thức trực tiếp: S = N*(N+1)*(2N+1)//6.", "n = int(input())\nprint(n * (n + 1) * (2 * n + 1) // 6)"], ["Thuật toán đếm có bao nhiêu số nguyên dương chia hết cho K trong đoạn [1, N].", "n, k = map(int, input().split())\nprint(n // k)"], ["Thuật toán tính góc tạo bởi kim giờ và kim phút lúc H giờ M phút.", "h, m = map(int, input().split())\ngoc = abs((30 * h + 0.5 * m) - 6 * m)\nprint(min(goc, 360 - goc))"], ["Thuật toán tìm số dư của (a^2 + b^2) khi chia cho M.", "a, b, m = map(int, input().split())\nprint((a * a + b * b) % m)"]], "coding": ["Bài 1: Nhập vào 2 số nguyên a, b. In ra tổng, hiệu, tích, thương nguyên và thương thực (làm tròn 2 chữ số).", "Bài 2: Nhập bán kính hình cầu R. Tính diện tích bề mặt (4πR²) và thể tích khối cầu (4/3 πR³).", "Bài 3: Nhập vào số nguyên có 4 chữ số. Tính tổng các chữ số và in ra số đảo ngược của nó.", "Bài 4: Nhập tọa độ 3 đỉnh A, B, C của một tam giác. Tính chu vi và diện tích tam giác đó.", "Bài 5: Một người đi xe đạp với vận tốc v1 (km/h) trong t1 giờ, sau đó đi bộ với vận tốc v2 trong t2 giờ. Tính tổng quãng đường và vận tốc trung bình.", "Bài 6: Nhập số phút học bài trong ngày. Quy đổi ra tuần, ngày, giờ, phút.", "Bài 7: Nhập vào một ký tự chữ cái in thường, in ra ký tự in hoa tương ứng và mã ASCII của nó (dùng hàm ord() và chr()).", "Bài 8: Nhập 2 số nguyên dương N và K. Tìm bội số lớn nhất của K mà nhỏ hơn hoặc bằng N.", "Bài 9: Tính tổng S = 1 + 3 + 5 + ... + (2N - 1) trong thời gian O(1).", "Bài 10: Nhập vào kích thước sân hình chữ nhật M x N và kích thước viên gạch vuông cạnh a. Tính số viên gạch tối thiểu cần dùng (không cắt gạch).", "Bài 11: Nhập thời điểm bắt đầu (giờ, phút) và thời gian làm bài (phút). In ra thời điểm nộp bài theo định dạng 24h.", "Bài 12: Tính giá trị biểu thức: A = (x³ + y³) / (x² + y² + 1) + √(|x - y|).", "Bài 13: Nhập số kWh điện tiêu thụ (giả sử đồng giá 2.500đ/kWh + 10% thuế VAT). In hóa đơn tiền điện.", "Bài 14: Cho đoạn thẳng AB trên trục số biết tọa độ xA, xB. Tìm tọa độ trung điểm M và độ dài AB.", "Bài 15: Nhập số tự nhiên N. Tính tổng các số chia hết cho 3 trong phạm vi từ 1 đến N bằng công thức cấp số cộng.", "Bài 16: Nhập vào một số thực x. Tách riêng phần nguyên và phần thập phân của x.", "Bài 17: Tính diện tích phần tô đậm (hình vành khăn) tạo bởi 2 đường tròn đồng tâm bán kính R1 và R2 (R1 > R2).", "Bài 18: Nhập số nguyên dương N (N >= 100). Xóa đi 2 chữ số tận cùng của N và in ra kết quả.", "Bài 19: Có N cái kẹo chia đều cho K học sinh. In ra số kẹo mỗi bạn nhận được và số kẹo còn dư lại.", "Bài 20: Nhập 2 số nguyên a, b. Không dùng hàm max(), min() hay câu lệnh if, hãy tìm số lớn hơn bằng công thức toán học: (a + b + |a - b|) // 2."]}, {"id": "bai2", "title": "Chuyên đề 2: Cấu trúc rẽ nhánh (if - elif - else) & Toán tử logic", "level": "Cơ bản • Chuyên đề 2", "desc": "Xử lý điều kiện phân nhánh, biểu thức quan hệ và logic (and, or, not), lồng ghép điều kiện và các bài toán biện luận.", "theory": ["<b>1. Quy tắc khối lệnh (Indentation):</b> Python sử dụng thụt lề (chuẩn PEP8 là 4 dấu cách) để xác định phạm vi của nhánh <code>if</code>, <code>elif</code>, <code>else</code>. Thụt lề sai sẽ gây lỗi <code>IndentationError</code>.", "<b>2. Toán tử logic & Đánh giá đoản mạch (Short-circuit):</b><br>• <code>A and B</code>: Chỉ đúng khi cả A và B cùng đúng. Nếu A sai, Python bỏ qua không kiểm tra B.<br>• <code>A or B</code>: Đúng khi ít nhất một biểu thức đúng. Nếu A đúng, Python bỏ qua B.<br>• <code>not A</code>: Phủ định giá trị chân lý của A.", "<b>3. Toán tử điều kiện 3 ngôi (Ternary Operator):</b> Giúp viết gọn các phép gán rẽ nhánh trên 1 dòng:<br><code>bien = gia_tri_dung if dieu_kien else gia_tri_sai</code>.", "<b>4. Kỹ thuật kiểm tra chia hết & số chính phương:</b><br>• <code>n % k == 0</code>: n chia hết cho k.<br>• <code>int(n**0.5)**2 == n</code>: n là số chính phương."], "examples": [{"name": "Ví dụ 1: Tính tiền điện sinh hoạt theo bậc thang", "code": "kwh = int(input(\"Nhập số điện tiêu thụ: \"))\nif kwh <= 50:\n    tien = kwh * 1800\nelif kwh <= 100:\n    tien = 50 * 1800 + (kwh - 50) * 2000\nelse:\n    tien = 50 * 1800 + 50 * 2000 + (kwh - 100) * 2500\nprint(f\"Tổng tiền điện: {tien:,} đồng\")", "explain": "Sử dụng cấu trúc <code>if - elif - else</code> loại trừ dần từng khoảng giá trị từ thấp lên cao."}, {"name": "Ví dụ 2: Giải và biện luận phương trình bậc hai ax² + bx + c = 0 (a ≠ 0)", "code": "import math\na, b, c = map(float, input(\"Nhập a, b, c: \").split())\ndelta = b**2 - 4*a*c\nif delta < 0:\n    print(\"Phương trình vô nghiệm\")\nelif delta == 0:\n    print(f\"Nghiệm kép x = {-b / (2*a):.2f}\")\nelse:\n    x1 = (-b - math.sqrt(delta)) / (2*a)\n    x2 = (-b + math.sqrt(delta)) / (2*a)\n    print(f\"Hai nghiệm: x1 = {x1:.2f}, x2 = {x2:.2f}\")", "explain": "Tính biệt thức Delta trước rồi chia thành 3 trường hợp rõ ràng."}], "trace": [["x = 12; print('A' if x % 3 == 0 and x % 4 == 0 else 'B')", "A (12 chia hết cho cả 3 và 4)"], ["a = 5; b = 10\nif a > 3:\n  if b < 8: print(1)\n  else: print(2)", "2 (a > 3 đúng, b < 8 sai nên vào nhánh else bên trong)"], ["x = 0\nif x: print('True')\nelse: print('False')", "False (Số 0 có giá trị chân lý là False)"], ["a, b, c = 7, 3, 9\nif a > b: a, b = b, a\nif b > c: b, c = c, b\nprint(a, b, c)", "3 7 9"], ["n = 25\nprint(int(n**0.5)**2 == n)", "True (25 là số chính phương)"], ["x = 15\nif x % 3 == 0: print('3', end=' ')\nif x % 5 == 0: print('5')", "3 5 (Hai lệnh if độc lập nên cả hai đều chạy)"], ["x = 15\nif x % 3 == 0: print('3')\nelif x % 5 == 0: print('5')", "3 (Cấu trúc elif chỉ chạy nhánh đúng đầu tiên)"], ["a = True; b = False; c = True\nprint(a or b and c)", "True (and ưu tiên hơn or: b and c = False; True or False = True)"], ["ch = 'g'\nprint('a' <= ch <= 'z')", "True (So sánh chuỗi theo bảng mã ASCII)"], ["x = -5\nres = x if x >= 0 else -x\nprint(res)", "5 (Tính giá trị tuyệt đối)"], ["m = 2; y = 2024\nd = 29 if (y%400==0 or (y%4==0 and y%100!=0)) else 28\nprint(d)", "29 (2024 là năm nhuận)"], ["a, b = 10, 20\nprint(a if a > b else b)", "20"], ["x = 7\nif not (x % 2 == 0): print('Lẻ')", "Lẻ"], ["s = 'Python'\nprint('y' in s and 'z' not in s)", "True"], ["a = 4; b = 4\nif a != b: print(a+b)\nelse: print(a*b)", "16"], ["score = 8.2\nxl = 'Giỏi' if score >= 8 else ('Khá' if score >= 6.5 else 'TB')\nprint(xl)", "Giỏi"], ["x = 100\nif x > 50: x -= 20\nif x > 70: x -= 10\nprint(x)", "70 (100 -> 80 -> 70)"], ["a, b = 0, 5\nprint(a != 0 and b / a > 1)", "False (Nhờ đoản mạch nên không bị lỗi chia cho 0)"], ["x = 18\nprint(x % 2 == 0 or x % 5 == 0)", "True"], ["c = 'A'\nprint(chr(ord(c) + 32))", "a (Chuyển chữ hoa sang chữ thường qua mã ASCII)"]], "algo": [["Thuật toán tìm số lớn nhất trong 3 số a, b, c: B1: Nhập a, b, c. B2: max_val ← a. B3: Nếu b > max_val thì max_val ← b. B4: Nếu c > max_val thì max_val ← c. B5: Xuất max_val.", "a, b, c = map(int, input().split())\nmax_val = a\nif b > max_val: max_val = b\nif c > max_val: max_val = c\nprint(max_val)"], ["Thuật toán kiểm tra 3 số dương a, b, c có lập thành tam giác không: B1: Nhập a, b, c. B2: Nếu (a+b>c) và (a+c>b) và (b+c>a) thì in 'CO' ngược lại in 'KHONG'.", "a, b, c = map(float, input().split())\nif a + b > c and a + c > b and b + c > a:\n    print('CO')\nelse:\n    print('KHONG')"], ["Thuật toán giải phương trình bậc nhất ax + b = 0: B1: Nhập a, b. B2: Nếu a=0: nếu b=0 in 'VSN', ngược lại in 'VN'. B3: Nếu a≠0 in -b/a.", "a, b = map(float, input().split())\nif a == 0:\n    print('VSN' if b == 0 else 'VN')\nelse:\n    print(f'{-b/a:.2f}')"], ["Thuật toán xác định số ngày của tháng M trong năm Y.", "m, y = map(int, input().split())\nif m in [1, 3, 5, 7, 8, 10, 12]: print(31)\nelif m in [4, 6, 9, 11]: print(30)\nelse:\n    nhuan = (y % 400 == 0) or (y % 4 == 0 and y % 100 != 0)\n    print(29 if nhuan else 28)"], ["Thuật toán kiểm tra điểm M(x, y) nằm trong, trên hay ngoài đường tròn tâm O(0,0) bán kính R.", "x, y, r = map(float, input().split())\nd2 = x*x + y*y\nif d2 < r*r: print('TRONG')\nelif d2 == r*r: print('TREN')\nelse: print('NGOAI')"], ["Thuật toán sắp xếp 3 số a, b, c theo thứ tự tăng dần bằng phép hoán đổi.", "a, b, c = map(int, input().split())\nif a > b: a, b = b, a\nif a > c: a, c = c, a\nif b > c: b, c = c, b\nprint(a, b, c)"], ["Thuật toán kiểm tra ký tự ch là chữ hoa, chữ thường, chữ số hay ký tự đặc biệt.", "ch = input()[0]\nif 'A' <= ch <= 'Z': print('Chu hoa')\nelif 'a' <= ch <= 'z': print('Chu thuong')\nelif '0' <= ch <= '9': print('Chu so')\nelse: print('Ky tu dac biet')"], ["Thuật toán tính cước taxi: 1km đầu giá 15.000đ, từ km thứ 2 đến km 10 giá 12.000đ/km, trên 10km giá 10.000đ/km.", "km = float(input())\nif km <= 1: tien = 15000\nelif km <= 10: tien = 15000 + (km - 1) * 12000\nelse: tien = 15000 + 9 * 12000 + (km - 10) * 10000\nprint(int(tien))"], ["Thuật toán kiểm tra 2 số nguyên a, b có cùng dấu hay trái dấu (biết a, b ≠ 0).", "a, b = map(int, input().split())\nprint('Cung dau' if a * b > 0 else 'Trai dau')"], ["Thuật toán tìm số lớn thứ nhì trong 3 số phân biệt a, b, c.", "a, b, c = map(int, input().split())\nprint(a + b + c - max(a, b, c) - min(a, b, c))"], ["Thuật toán kiểm tra số nguyên dương N có phải là số đối xứng có 3 chữ số không.", "n = int(input())\nprint('CO' if 100 <= n <= 999 and (n // 100 == n % 10) else 'KHONG')"], ["Thuật toán kiểm tra 2 đoạn thẳng [a, b] và [c, d] trên trục số có giao nhau không.", "a, b, c, d = map(int, input().split())\nprint('CO' if max(a, c) <= min(b, d) else 'KHONG')"], ["Thuật toán tính chỉ số BMI và phân loại thể trạng (Gầy < 18.5, Bình thường < 25, Thừa cân >= 25).", "w, h = map(float, input().split())\nbmi = w / (h * h)\nif bmi < 18.5: print('Gay')\nelif bmi < 25: print('Binh thuong')\nelse: print('Thua can')"], ["Thuật toán kiểm tra năm X thuộc thế kỷ thứ mấy.", "x = int(input())\nprint((x - 1) // 100 + 1)"], ["Thuật toán tìm chữ số lớn nhất của một số nguyên có 3 chữ số.", "n = int(input())\nprint(max(n // 100, (n // 10) % 10, n % 10))"], ["Thuật toán kiểm tra tổng của 2 số bất kỳ trong 3 số a, b, c có bằng số còn lại không.", "a, b, c = map(int, input().split())\nprint('YES' if a+b==c or a+c==b or b+c==a else 'NO')"], ["Thuật toán tính tiền thưởng: Doanh số >= 100tr thưởng 10%, >= 50tr thưởng 5%, dưới 50tr không thưởng.", "ds = float(input())\nif ds >= 100: th = ds * 0.1\nelif ds >= 50: th = ds * 0.05\nelse: th = 0\nprint(th)"], ["Thuật toán in ra thời điểm sau 1 giây của giờ hiện tại (H giờ M phút S giây).", "h, m, s = map(int, input().split())\ns += 1\nif s == 60:\n    s = 0; m += 1\n    if m == 60:\n        m = 0; h = (h + 1) % 24\nprint(f'{h:02d}:{m:02d}:{s:02d}')"], ["Thuật toán kiểm tra ô (r, c) trên bàn cờ vua 8x8 là ô Trắng hay Đen (biết ô (1,1) là ô Đen).", "r, c = map(int, input().split())\nprint('Den' if (r + c) % 2 == 0 else 'Trang')"], ["Thuật toán xét học bổng: ĐTB >= 8.5 và không môn nào (Toán, Văn, Anh) dưới 7.0.", "t, v, a = map(float, input().split())\ndtb = (t + v + a) / 3\nprint('Dat' if dtb >= 8.5 and min(t, v, a) >= 7.0 else 'Khong dat')"]], "coding": ["Bài 1: Nhập 3 cạnh tam giác a, b, c. Phân loại tam giác: Không hợp lệ, Đều, Vuông cân, Vuông, Cân, Thường.", "Bài 2: Nhập tọa độ 2 hình chữ nhật song song trục tọa độ. Tính diện tích phần giao nhau của chúng (nếu không giao in 0).", "Bài 3: Nhập vào ngày, tháng, năm. Kiểm tra xem ngày tháng năm đó có hợp lệ trên lịch thực tế hay không.", "Bài 4: Nhập vào 4 số nguyên a, b, c, d. Tìm giá trị lớn nhất và nhỏ nhất mà không dùng hàm max(), min().", "Bài 5: Viết chương trình trò chơi Oẳn Tù Tì (Kéo - Búa - Bao) giữa 2 người chơi nhập từ bàn phím và thông báo người thắng.", "Bài 6: Nhập một số nguyên N có tối đa 4 chữ số. Đọc số đó thành chữ tiếng Việt (Ví dụ: 105 -> Một trăm linh năm).", "Bài 7: Nhập tọa độ 2 quân Xe trên bàn cờ vua. Kiểm tra xem 2 quân Xe có ăn được nhau không.", "Bài 8: Nhập tọa độ 2 quân Tượng trên bàn cờ vua. Kiểm tra xem 2 quân Tượng có ăn được nhau không.", "Bài 9: Nhập tọa độ 2 quân Hậu trên bàn cờ vua. Kiểm tra xem 2 quân Hậu có ăn được nhau không.", "Bài 10: Nhập vào hệ số a, b, c của phương trình trùng phương ax⁴ + bx² + c = 0. Tìm số nghiệm thực của phương trình.", "Bài 11: Tính thuế thu nhập cá nhân theo biểu thuế lũy tiến 3 bậc đơn giản.", "Bài 12: Nhập 3 số nguyên a, b, c. Kiểm tra xem có thể sắp xếp 3 số này tạo thành một cấp số cộng hoặc cấp số nhân không.", "Bài 13: Nhập một ký tự: nếu là chữ hoa đổi sang chữ thường, nếu là chữ thường đổi sang chữ hoa, còn lại giữ nguyên.", "Bài 14: Nhập giờ vào làm và giờ tan ca (tính theo giờ nguyên 0..23, có thể làm qua đêm). Tính tổng số giờ làm việc.", "Bài 15: Cho 2 phân số a/b và c/d (b, d > 0). So sánh hai phân số mà không dùng phép chia số thực.", "Bài 16: Nhập vào tháng (1..12). In ra quý tương ứng (Quý 1, 2, 3, 4) và mùa tương ứng.", "Bài 17: Một cửa hàng khuyến mãi: Mua 3 tặng 1. Nhập số lượng khách cần mua N và đơn giá P. Tính số tiền tối thiểu phải trả.", "Bài 18: Nhập vào số nguyên N. Nếu N chẵn thì chia đôi, nếu N lẻ thì nhân 3 cộng 1 (Bước nhảy Collatz). In kết quả.", "Bài 19: Kiểm tra điểm P(x, y) có nằm bên trong hình chữ nhật có góc trái dưới (x1, y1) và góc phải trên (x2, y2) không.", "Bài 20: Nhập vào năm dương lịch, in ra tên năm Âm lịch theo Can Chi (Ví dụ: 2026 -> Bính Ngọ)."]}, {"id": "bai3", "title": "Chuyên đề 3: Vòng lặp (for, while) & Kỹ thuật giải toán số học", "level": "Cơ bản - Khá • Chuyên đề 3", "desc": "Vòng lặp xác định for với range(), vòng lặp không xác định while, kỹ thuật cộng dồn, đếm, đặt cờ hiệu (flag) và thuật toán Euclid.", "theory": ["<b>1. Vòng lặp for và hàm range():</b><br>• <code>range(n)</code>: Chạy từ 0 đến n - 1.<br>• <code>range(a, b)</code>: Chạy từ a đến b - 1.<br>• <code>range(a, b, step)</code>: Nhảy mỗi lần <code>step</code> đơn vị (có thể âm để đếm ngược, ví dụ <code>range(10, 0, -1)</code>).", "<b>2. Vòng lặp while và câu lệnh điều khiển:</b> Dùng khi số lần lặp phụ thuộc vào điều kiện biến đổi bên trong vòng lặp. <code>break</code> dừng vòng lặp ngay lập tức; <code>continue</code> nhảy sang lần lặp tiếp theo.", "<b>3. Các kỹ thuật nền tảng trong lập trình thi đấu:</b><br>• <b>Cộng dồn / Nhân dồn:</b> Khởi tạo <code>S = 0</code> (hoặc <code>P = 1</code>) trước vòng lặp.<br>• <b>Cờ hiệu (Flag):</b> Khởi tạo <code>ok = True</code>, nếu gặp trường hợp vi phạm thì gán <code>ok = False; break</code>.<br>• <b>Thuật toán Euclid tìm ƯCLN:</b> Lặp khi <code>b != 0</code>: <code>a, b = b, a % b</code>."], "examples": [{"name": "Ví dụ 1: Kiểm tra số nguyên tố tối ưu đến căn bậc hai của N", "code": "import math\nn = int(input(\"Nhập N: \"))\nif n < 2:\n    print(\"Không là số nguyên tố\")\nelse:\n    la_snt = True\n    for i in range(2, int(math.sqrt(n)) + 1):\n        if n % i == 0:\n            la_snt = False\n            break\n    print(\"Là số nguyên tố\" if la_snt else \"Không là số nguyên tố\")", "explain": "Nếu N có ước lớn hơn √N thì chắc chắn phải có ước tương ứng nhỏ hơn √N, do đó chỉ cần duyệt tới <code>int(sqrt(n))</code> giúp giảm độ phức tạp từ O(N) xuống O(√N)."}, {"name": "Ví dụ 2: Tìm ƯCLN và BCNN bằng thuật toán Euclid", "code": "a, b = map(int, input(\"Nhập 2 số nguyên dương: \").split())\nx, y = a, b\nwhile y != 0:\n    x, y = y, x % y\nucln = x\nbcnn = (a * b) // ucln\nprint(f\"ƯCLN = {ucln}, BCNN = {bcnn}\")", "explain": "Thuật toán Euclid chia lấy dư liên tiếp cho đến khi số dư bằng 0."}], "trace": [["s = 0\nfor i in range(1, 6, 2): s += i\nprint(s)", "9 (i nhận các giá trị 1, 3, 5 -> 1+3+5 = 9)"], ["for i in range(5, 0, -2): print(i, end=' ')", "5 3 1"], ["n = 48; cnt = 0\nwhile n % 2 == 0: cnt += 1; n //= 2\nprint(cnt, n)", "4 3 (48 = 2^4 * 3)"], ["s = 0\nfor i in range(1, 10):\n  if i % 3 == 0: continue\n  if i > 6: break\n  s += i\nprint(s)", "12 (Cộng 1 + 2 + 4 + 5 = 12; bỏ qua 3, 6 và dừng tại 7)"], ["a, b = 36, 24\nwhile b: a, b = b, a % b\nprint(a)", "12 (ƯCLN của 36 và 24)"], ["n = 504; res = 0\nwhile n > 0: res = res * 10 + n % 10; n //= 10\nprint(res)", "405 (Đảo ngược số 504)"], ["cnt = 0\nfor i in range(1, 4):\n  for j in range(1, i + 1): cnt += 1\nprint(cnt)", "6 (1 + 2 + 3 = 6)"], ["p = 1\nfor i in range(1, 6): p *= i\nprint(p)", "120 (5! = 120)"], ["x = 1\nwhile x < 50: x *= 2\nprint(x)", "64 (1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64)"], ["s = 0\nfor i in range(10, 20):\n  if i % 4 == 0: s += i\nprint(s)", "28 (12 + 16 = 28)"], ["n = 29; ok = True\nfor i in range(2, 6):\n  if n % i == 0: ok = False\nprint(ok)", "True"], ["a, b = 1, 1\nfor _ in range(4): a, b = b, a + b\nprint(a, b)", "5 8 (Dãy Fibonacci)"], ["n = 12345; m = 0\nwhile n: m = max(m, n % 10); n //= 10\nprint(m)", "5 (Chữ số lớn nhất)"], ["for i in range(3):\n  print('*' * (i + 1))", "Tam giác sao 3 dòng: *, **, ***"], ["s = 0; i = 1\nwhile s <= 10: s += i; i += 1\nprint(s, i)", "15 6 (s = 1+2+3+4+5 = 15 > 10, i tăng lên 6)"], ["n = 12; d = 0\nfor i in range(1, n + 1):\n  if n % i == 0: d += 1\nprint(d)", "6 (Số ước của 12: 1, 2, 3, 4, 6, 12)"], ["x = 100\nfor _ in range(3): x //= 3\nprint(x)", "3 (100 -> 33 -> 11 -> 3)"], ["s = 0\nfor i in range(1, 5): s += (-1)**i * i\nprint(s)", "2 (-1 + 2 - 3 + 4 = 2)"], ["n = 7; b = ''\nwhile n > 0: b = str(n % 2) + b; n //= 2\nprint(b)", "111 (Biểu diễn nhị phân của 7)"], ["count = 0\nfor i in range(1, 101):\n  if i % 7 == 0: count += 1\nprint(count)", "14"]], "algo": [["Thuật toán tính N! (giai thừa): B1: Nhập N. B2: gt ← 1. B3: Lặp i từ 1 đến N: gt ← gt * i. B4: In gt.", "n = int(input())\ngt = 1\nfor i in range(1, n + 1):\n    gt *= i\nprint(gt)"], ["Thuật toán đếm số lượng ước nguyên dương của N (tối ưu O(√N)): Duyệt i từ 1 đến phần nguyên √N, nếu N chia hết cho i thì tăng đếm thêm 2 (hoặc 1 nếu i*i == N).", "import math\nn = int(input())\ndem = 0\nfor i in range(1, int(math.sqrt(n)) + 1):\n    if n % i == 0:\n        dem += 1 if i * i == n else 2\nprint(dem)"], ["Thuật toán kiểm tra số hoàn hảo (tổng các ước thực sự bằng chính nó, ví dụ 6 = 1+2+3).", "n = int(input())\ns = 0\nfor i in range(1, n // 2 + 1):\n    if n % i == 0: s += i\nprint('CO' if s == n and n > 0 else 'KHONG')"], ["Thuật toán phân tích số nguyên dương N ra thừa số nguyên tố.", "n = int(input())\ni = 2\nwhile i * i <= n:\n    while n % i == 0:\n        print(i, end=' ')\n        n //= i\n    i += 1\nif n > 1: print(n)"], ["Thuật toán tìm số Fibonacci thứ N (F1=1, F2=1, Fn = Fn-1 + Fn-2).", "n = int(input())\na, b = 1, 1\nfor _ in range(n - 2):\n    a, b = b, a + b\nprint(b)"], ["Thuật toán chuyển đổi số nguyên dương N từ hệ thập phân sang hệ nhị phân.", "n = int(input())\nif n == 0: print(0)\nelse:\n    kq = ''\n    while n > 0:\n        kq = str(n % 2) + kq\n        n //= 2\n    print(kq)"], ["Thuật toán tính tổng S = 1 + 1/2 + 1/3 + ... + 1/N.", "n = int(input())\ns = sum(1 / i for i in range(1, n + 1))\nprint(f'{s:.4f}')"], ["Thuật toán tìm số nguyên dương K nhỏ nhất sao cho 1 + 2 + ... + K > N.", "n = int(input())\ns = 0; k = 0\nwhile s <= n:\n    k += 1; s += k\nprint(k)"], ["Thuật toán tính lũy thừa a^b (b >= 0) bằng vòng lặp.", "a, b = map(int, input().split())\nkq = 1\nfor _ in range(b): kq *= a\nprint(kq)"], ["Thuật toán kiểm tra N có phải là số Armstrong có 3 chữ số (abc = a^3 + b^3 + c^3).", "n = int(input())\na, b, c = n // 100, (n // 10) % 10, n % 10\nprint('CO' if a**3 + b**3 + c**3 == n else 'KHONG')"], ["Thuật toán in bảng cửu chương của số N (từ N x 1 đến N x 10).", "n = int(input())\nfor i in range(1, 11):\n    print(f'{n} x {i} = {n * i}')"], ["Thuật toán tìm chữ số đầu tiên của số nguyên dương N.", "n = int(input())\nwhile n >= 10: n //= 10\nprint(n)"], ["Thuật toán đếm số chữ số chẵn và số chữ số lẻ của số nguyên dương N.", "n = int(input())\nchan = le = 0\nwhile n > 0:\n    if (n % 10) % 2 == 0: chan += 1\n    else: le += 1\n    n //= 10\nprint(chan, le)"], ["Thuật toán giải bài toán dân gian: Vừa gà vừa chó, bó lại cho tròn, 36 con, 100 chân chẵn.", "for ga in range(37):\n    cho = 36 - ga\n    if 2 * ga + 4 * cho == 100:\n        print(f'Ga: {ga}, Cho: {cho}')"], ["Thuật toán rút gọn phân số a/b về phân số tối giản.", "import math\na, b = map(int, input().split())\ng = math.gcd(a, b)\nprint(f'{a//g}/{b//g}')"], ["Thuật toán tìm số nguyên tố nhỏ nhất lớn hơn N.", "def snt(x):\n    if x < 2: return False\n    for i in range(2, int(x**0.5)+1):\n        if x % i == 0: return False\n    return True\nn = int(input()) + 1\nwhile not snt(n): n += 1\nprint(n)"], ["Thuật toán tính tổng các ước của số nguyên dương N.", "import math\nn = int(input())\ns = 0\nfor i in range(1, int(math.sqrt(n)) + 1):\n    if n % i == 0:\n        s += i if i * i == n else i + n // i\nprint(s)"], ["Thuật toán kiểm tra các chữ số của N có tăng dần từ trái sang phải không.", "n = int(input())\nok = True\nwhile n >= 10:\n    if n % 10 <= (n // 10) % 10: ok = False; break\n    n //= 10\nprint('CO' if ok else 'KHONG')"], ["Thuật toán đếm số chữ số 0 tận cùng của N! (Đếm số bội của 5, 25, 125...).", "n = int(input())\ndem = 0; p = 5\nwhile p <= n:\n    dem += n // p\n    p *= 5\nprint(dem)"], ["Thuật toán tính tổng S = 1! + 2! + 3! + ... + N!.", "n = int(input())\ns = 0; gt = 1\nfor i in range(1, n + 1):\n    gt *= i; s += gt\nprint(s)"]], "coding": ["Bài 1: Nhập 2 số nguyên A, B (A <= B). In ra tất cả các số nguyên tố trong đoạn [A, B] và tính tổng của chúng.", "Bài 2: Nhập số nguyên dương N. Kiểm tra N có phải là số siêu nguyên tố không (khi bỏ dần từng chữ số bên phải thì phần còn lại vẫn là số nguyên tố).", "Bài 3: Nhập vào một dãy số kết thúc bằng số 0. Tính trung bình cộng các số dương đã nhập.", "Bài 4: In ra hình chữ nhật rỗng kích thước M dòng x N cột bằng dấu sao *.", "Bài 5: In ra tam giác cân đặc chiều cao H bằng dấu sao *.", "Bài 6: Nhập số nguyên dương N. Tìm ước nguyên tố lớn nhất của N.", "Bài 7: Tìm tất cả các số có 3 chữ số sao cho số đó chia hết cho tích các chữ số của chính nó.", "Bài 8: Nhập số nguyên dương N. Nén số N bằng cách cộng các chữ số lặp đi lặp lại cho đến khi chỉ còn 1 chữ số (Digital Root).", "Bài 9: Tính số bước biến đổi N về 1 theo phỏng đoán Collatz (N chẵn -> N/2, N lẻ -> 3N + 1).", "Bài 10: Nhập 2 số nguyên dương A và B. Kiểm tra xem A và B có phải là cặp số thân thiết không (tổng ước thực sự của A bằng B và ngược lại).", "Bài 11: Tìm tất cả các số nguyên tố đối xứng (Palindrome Prime) trong đoạn [10, 1000].", "Bài 12: Nhập số nguyên dương N. Kiểm tra N có biểu diễn được thành tổng của 2 số chính phương không.", "Bài 13: Viết chương trình trò chơi đoán số: Máy chọn ngẫu nhiên số từ 1..100, người chơi đoán tối đa 7 lượt.", "Bài 14: Nhập N. Tính giá trị biểu thức căn lồng nhau: √(2 + √(2 + ... + √2)) với N dấu căn.", "Bài 15: Tìm số tự nhiên N nhỏ nhất có đúng K ước nguyên dương (K <= 12).", "Bài 16: Nhập số nguyên dương N. In ra dạng biểu diễn N thành tổng các lũy thừa phân biệt của 2.", "Bài 17: Đếm xem có bao nhiêu bộ 3 số nguyên dương (a, b, c) thỏa mãn a² + b² = c² và c <= N (Bộ ba Pytago).", "Bài 18: Nhập số tiền gửi tiết kiệm A, lãi suất hàng tháng r%, số tiền mục tiêu B. Hỏi sau ít nhất bao nhiêu tháng thì đạt mục tiêu?", "Bài 19: Nhập N. Tính tổng các số tự nhiên <= N mà không chia hết cho 3 và cũng không chia hết cho 5.", "Bài 20: Tìm chữ số tận cùng của lũy thừa A^B (với A, B lên tới 10^9) bằng quy luật chu kỳ chữ số tận cùng."]}, {"id": "bai4", "title": "Chuyên đề 4: Xâu ký tự (String) & Kỹ thuật Slicing", "level": "Trung bình • Chuyên đề 4", "desc": "Chỉ số hai chiều, cắt lát Slicing [start:end:step], tính bất biến của xâu, chuẩn hóa văn bản và các bài toán xử lý chuỗi.", "theory": ["<b>1. Chỉ số (Indexing) & Cắt lát (Slicing):</b><br>• Chỉ số dương bắt đầu từ <code>0</code> (trái sang phải); chỉ số âm bắt đầu từ <code>-1</code> (phải sang trái).<br>• Cú pháp cắt lát: <code>s[start : stop : step]</code>. Đặc biệt: <code>s[::-1]</code> đảo ngược xâu; <code>s[::2]</code> lấy các ký tự ở vị trí chẵn.", "<b>2. Tính bất biến (Immutable):</b> Không thể sửa trực tiếp <code>s[0] = 'A'</code>. Muốn thay đổi phải tạo xâu mới thông qua ghép chuỗi hoặc hàm <code>replace()</code>.", "<b>3. Bộ phương thức xử lý xâu cốt lõi:</b><br>• Tách & Nối: <code>s.split()</code> (tách theo khoảng trắng thành list), <code>' '.join(lst)</code> (nối list thành xâu).<br>• Tìm kiếm & Đếm: <code>s.find(sub)</code> (trả về vị trí đầu tiên hoặc -1), <code>s.count(sub)</code>.<br>• Kiểm tra loại ký tự: <code>isalpha()</code>, <code>isdigit()</code>, <code>isalnum()</code>, <code>isupper()</code>, <code>islower()</code>."], "examples": [{"name": "Ví dụ 1: Tách và tính tổng các số nguyên ẩn trong xâu ký tự", "code": "s = input(\"Nhập xâu hỗn hợp: \")\nso_hien_tai = \"\"\ntong = 0\nfor ch in s + \" \": # Thêm dấu cách cuối để chốt số cuối cùng\n    if ch.isdigit():\n        so_hien_tai += ch\n    else:\n        if so_hien_tai != \"\":\n            tong += int(so_hien_tai)\n            so_hien_tai = \"\"\nprint(\"Tổng các số trong xâu:\", tong)", "explain": "Kỹ thuật thêm một ký tự lính canh (dấu cách) ở cuối xâu giúp xử lý trọn vẹn cả trường hợp số nằm ngay cuối chuỗi."}, {"name": "Ví dụ 2: Nén xâu RLE (Run-Length Encoding)", "code": "s = input(\"Nhập xâu cần nén (vd: aaabbc): \")\nif not s:\n    print(\"\")\nelse:\n    kq = \"\"\n    dem = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            dem += 1\n        else:\n            kq += s[i-1] + str(dem)\n            dem = 1\n    kq += s[-1] + str(dem)\n    print(\"Xâu sau nén:\", kq)", "explain": "Duyệt từ phần tử thứ 2 so sánh với phần tử liền trước để đếm số ký tự giống nhau liên tiếp."}], "trace": [["s = 'TINHOC'; print(s[1:4], s[-2:])", "INH OC"], ["s = 'abcdef'; print(s[::-2])", "fdb (Đảo ngược và lấy bước nhảy 2)"], ["s = '  hoc   python  '; print('-'.join(s.split()))", "hoc-python"], ["s = 'banana'; print(s.count('a'), s.find('na'))", "3 2"], ["s = 'Python 3.12'; print(sum(c.isdigit() for c in s))", "3 (Gồm '3', '1', '2')"], ["s = 'abracadabra'; print(s.replace('a', 'A', 2))", "AbrAcadabra (Chỉ thay thế 2 lần đầu)"], ["w = ['2026', '11', '23']; print('/'.join(w))", "2026/11/23"], ["s = 'Level'; print(s.lower() == s.lower()[::-1])", "True"], ["s = 'Hello World'; print(s.swapcase())", "hELLO wORLD"], ["s = 'abc123xyz'; print(''.join(c for c in s if c.isalpha()))", "abcxyz"], ["s = '   ***Python***   '; print(s.strip(' *'))", "Python"], ["s = 'programming'; print(len(set(s)))", "8 (Có 8 ký tự phân biệt)"], ["a = '10'; b = '2'; print(a > b)", "False (So sánh từ điển: '1' đứng trước '2')"], ["s = 'Lap trinh Python'; print(len(s.split()))", "3 (Có 3 từ)"], ["s = 'abcdef'; print(s[1::2])", "bdf"], ["s = 'abc'; r = ''\nfor c in s: r = c + r\nprint(r)", "cba (Đảo ngược xâu)"], ["s = 'ha' * 3; print(s.find('ah'))", "1"], ["s = '2468'; print(all(int(c)%2==0 for c in s))", "True"], ["s = 'TinHoc9'; print(s.isalnum(), s.isalpha())", "True False"], ["s = '  nguyen van a  '; print(s.strip().title())", "Nguyen Van A"]], "algo": [["Thuật toán kiểm tra xâu S có phải là xâu đối xứng (Palindrome) không.", "s = input()\nprint('CO' if s == s[::-1] else 'KHONG')"], ["Thuật toán đếm số lượng nguyên âm (a, e, i, o, u) trong xâu S không phân biệt hoa thường.", "s = input().lower()\ndem = sum(1 for c in s if c in 'aeiou')\nprint(dem)"], ["Thuật toán chuẩn hóa họ tên: Xóa khoảng trắng thừa và viết hoa chữ cái đầu mỗi từ.", "s = input()\nprint(' '.join(s.split()).title())"], ["Thuật toán tìm từ dài nhất trong một câu S.", "words = input().split()\nprint(max(words, key=len))"], ["Thuật toán mã hóa Caesar: Dịch mỗi chữ cái in hoa trong S tiến lên K vị trí trên bảng chữ cái.", "s = input()\nk = int(input())\nkq = ''\nfor c in s:\n    if 'A' <= c <= 'Z':\n        kq += chr((ord(c) - 65 + k) % 26 + 65)\n    else: kq += c\nprint(kq)"], ["Thuật toán kiểm tra 2 xâu S1 và S2 có phải là đảo chữ (Anagram) của nhau không.", "s1 = input().replace(' ', '').lower()\ns2 = input().replace(' ', '').lower()\nprint('CO' if sorted(s1) == sorted(s2) else 'KHONG')"], ["Thuật toán xóa tất cả các ký tự trùng lặp liền kề nhau trong xâu S (vd: 'aaabbc' -> 'abc').", "s = input()\nkq = s[0] if s else ''\nfor i in range(1, len(s)):\n    if s[i] != s[i-1]: kq += s[i]\nprint(kq)"], ["Thuật toán đếm số lần xuất hiện của xâu con P trong xâu S (tính cả trường hợp chồng lấn).", "s = input(); p = input()\ndem = 0\nfor i in range(len(s) - len(p) + 1):\n    if s[i:i+len(p)] == p: dem += 1\nprint(dem)"], ["Thuật toán tách lấy tên tệp và phần mở rộng từ đường dẫn (vd: 'D:/BaiTap/code.py' -> 'code' và 'py').", "path = input()\nfile_name = path.split('/')[-1]\nten, duoi = file_name.rsplit('.', 1)\nprint(ten, duoi)"], ["Thuật toán kiểm tra mật khẩu mạnh: dài >= 8, có chữ hoa, chữ thường và chữ số.", "pw = input()\nok = (len(pw) >= 8 and any(c.isupper() for c in pw) and any(c.islower() for c in pw) and any(c.isdigit() for c in pw))\nprint('Manh' if ok else 'Yeu')"], ["Thuật toán tạo email tự động từ họ tên (vd: 'Nguyen Van An' -> 'annv@school.edu.vn').", "w = input().lower().split()\nemail = w[-1] + ''.join(x[0] for x in w[:-1]) + '@school.edu.vn'\nprint(email)"], ["Thuật toán đảo ngược thứ tự các từ trong câu nhưng giữ nguyên từng từ.", "print(' '.join(input().split()[::-1]))"], ["Thuật toán tìm ký tự xuất hiện nhiều nhất trong xâu S.", "s = input()\nprint(max(set(s), key=s.count))"], ["Thuật toán kiểm tra xâu S có chứa toàn bộ 26 chữ cái tiếng Anh (Pangram) không.", "s = set(c for c in input().lower() if 'a' <= c <= 'z')\nprint('CO' if len(s) == 26 else 'KHONG')"], ["Thuật toán giải nén xâu RLE (vd: 'a3b2c1' -> 'aaabbc').", "s = input()\nkq = ''\nfor i in range(0, len(s), 2):\n    kq += s[i] * int(s[i+1])\nprint(kq)"], ["Thuật toán tìm tiền tố chung dài nhất của 2 xâu S1 và S2.", "s1, s2 = input(), input()\ni = 0\nwhile i < min(len(s1), len(s2)) and s1[i] == s2[i]: i += 1\nprint(s1[:i])"], ["Thuật toán chuyển đổi xâu từ định dạng snake_case sang camelCase.", "w = input().split('_')\nprint(w[0] + ''.join(x.title() for x in w[1:]))"], ["Thuật toán kiểm tra dấu ngoặc đơn '(' và ')' trong biểu thức có hợp lệ không.", "s = input()\ndem = 0; ok = True\nfor c in s:\n    if c == '(': dem += 1\n    elif c == ')': dem -= 1\n    if dem < 0: ok = False; break\nprint('Hop le' if ok and dem == 0 else 'Khong hop le')"], ["Thuật toán xóa các ký tự số ra khỏi xâu S.", "print(''.join(c for c in input() if not c.isdigit()))"], ["Thuật toán tìm ký tự đầu tiên không bị lặp lại trong xâu S.", "s = input()\nfor c in s:\n    if s.count(c) == 1: print(c); break"]], "coding": ["Bài 1: Nhập một xâu S. Đếm số chữ cái in hoa, chữ cái in thường, chữ số và ký tự đặc biệt trong S.", "Bài 2: Nhập một xâu S gồm các từ cách nhau bởi nhiều dấu cách. Hãy chuẩn hóa xâu và in ra số lượng từ.", "Bài 3: Nhập xâu S. Tìm xâu con đối xứng dài nhất nằm liên tiếp trong S.", "Bài 4: Nhập vào số nguyên lớn N (có thể lên tới 100 chữ số). Kiểm tra N có chia hết cho 3, 9, 11 hay không.", "Bài 5: Viết chương trình cộng hai số nguyên siêu lớn A và B (lên tới 200 chữ số) dưới dạng xâu ký tự.", "Bài 6: Nhập xâu S. Xóa ít nhất bao nhiêu ký tự để S trở thành xâu đối xứng?", "Bài 7: Nhập 2 xâu A và B. Kiểm tra xem xâu B có thể tạo thành bằng cách xóa bớt một số ký tự trong A hay không (Xâu con không liên tiếp).", "Bài 8: Nhập một đoạn văn bản. Thống kê tần suất xuất hiện của từng từ và in theo thứ tự giảm dần.", "Bài 9: Viết chương trình định dạng số nguyên bất kỳ có dấu phẩy phân cách hàng nghìn (ví dụ: 1234567 -> 1,234,567).", "Bài 10: Nhập vào biểu thức số học chỉ gồm phép cộng và trừ (ví dụ: '12+5-3+10'). Tính giá trị biểu thức đó.", "Bài 11: Tìm số nguyên lớn nhất xuất hiện trong một xâu ký tự hỗn hợp (ví dụ: 'abc0025xy19z' -> 25).", "Bài 12: Nhập xâu S chỉ gồm các ký tự '0' và '1'. Tìm độ dài dãy con gồm toàn số '1' liên tiếp dài nhất.", "Bài 13: Nhập một xâu S. Kiểm tra xem S có phải là xâu ghép lặp lại của một xâu con ngắn hơn không (vd: 'ababab' là 'ab' lặp 3 lần).", "Bài 14: Mã hóa Run-Length Encoding hỗ trợ cả số có nhiều chữ số (ví dụ: 'aaaaaaaaaaaa' -> 'a12').", "Bài 15: Giải mã Run-Length Encoding hỗ trợ số nhiều chữ số (ví dụ: 'a12b3' -> 'aaaaaaaaaaaabbb').", "Bài 16: Nhập vào một chuỗi thời gian dạng 'HH:MM:SS'. Kiểm tra tính hợp lệ và tính số giây tính từ 00:00:00.", "Bài 17: Nhập danh sách N tên học sinh. Sắp xếp danh sách theo tên (từ cuối cùng), nếu trùng tên thì xếp theo họ đệm.", "Bài 18: Tìm xâu con chung liên tiếp dài nhất của 2 xâu S1 và S2.", "Bài 19: Nhập một số La Mã (ví dụ 'MCMXCIV'), chuyển đổi sang số nguyên hệ thập phân.", "Bài 20: Nhập một số nguyên dương N (1 <= N <= 3999), chuyển đổi sang số La Mã tương ứng."]}, {"id": "bai5", "title": "Chuyên đề 5: Danh sách (List), Tuple & List Comprehension", "level": "Trung bình • Chuyên đề 5", "desc": "Quản lý mảng 1 chiều và mảng 2 chiều (ma trận), các phương thức thêm/xóa/sắp xếp, sao chép danh sách và kỹ thuật List Comprehension.", "theory": ["<b>1. List (Danh sách động) vs Tuple (Bộ bất biến):</b><br>• <code>List []</code>: Có thể thay đổi, thêm, xóa phần tử. Dùng để lưu dãy số, mảng dữ liệu.<br>• <code>Tuple ()</code>: Không thể thay đổi sau khi tạo, tốc độ truy xuất nhanh hơn và dùng làm khóa cho Dictionary.", "<b>2. Các phương thức thao tác List quan trọng:</b><br>• Thêm: <code>append(x)</code> (cuối), <code>insert(i, x)</code> (vị trí i), <code>extend(lst)</code> (nối mảng).<br>• Xóa: <code>pop(i)</code> (xóa theo chỉ số và trả về giá trị), <code>remove(x)</code> (xóa giá trị x đầu tiên).<br>• Sắp xếp: <code>a.sort()</code> (sắp xếp tại chỗ), <code>sorted(a)</code> (trả về bản sao đã sắp xếp).", "<b>3. Cảnh báo sao chép nông (Shallow Copy):</b> Viết <code>b = a</code> chỉ tạo thêm tên gọi mới trỏ cùng vùng nhớ! Muốn tạo bản sao độc lập phải viết <code>b = a.copy()</code> hoặc <code>b = a[:]</code>.", "<b>4. List Comprehension:</b> Cú pháp tạo mảng siêu gọn:<br><code>[biểu_thức for x in iterable if điều_kiện]</code>."], "examples": [{"name": "Ví dụ 1: Lọc số chính phương và sắp xếp giảm dần bằng List Comprehension", "code": "a = list(map(int, input(\"Nhập dãy số: \").split()))\nscp = sorted([x for x in a if x >= 0 and int(x**0.5)**2 == x], reverse=True)\nprint(\"Các số chính phương giảm dần:\", scp)", "explain": "Kết hợp List Comprehension để lọc điều kiện và hàm <code>sorted(..., reverse=True)</code> để sắp xếp giảm dần."}, {"name": "Ví dụ 2: Nhập và tính tổng đường chéo chính ma trận vuông N x N", "code": "n = int(input(\"Nhập cấp ma trận N: \"))\nmatrix = [list(map(int, input().split())) for _ in range(n)]\ntong_cheo_chinh = sum(matrix[i][i] for i in range(n))\ntong_cheo_phu = sum(matrix[i][n - 1 - i] for i in range(n))\nprint(\"Chéo chính:\", tong_cheo_chinh, \"| Chéo phụ:\", tong_cheo_phu)", "explain": "Mảng 2 chiều trong Python được biểu diễn bằng List lồng List."}], "trace": [["a = [1, 2, 3]; b = a; b.append(4); print(len(a))", "4 (b và a trỏ chung 1 danh sách)"], ["a = [1, 2, 3]; b = a[:]; b.append(4); print(len(a))", "3 (a[:] tạo bản sao độc lập)"], ["a = [10, 20, 30, 40]; print(a.pop(1), a)", "20 [10, 30, 40]"], ["a = [x**2 for x in range(5) if x % 2 == 1]; print(a)", "[1, 9]"], ["a = [3, 1, 4, 1, 5]; a.remove(1); print(a)", "[3, 4, 1, 5] (Chỉ xóa số 1 đầu tiên)"], ["m = [[1, 2], [3, 4], [5, 6]]; print(m[1][0], m[-1][-1])", "3 6"], ["a = [1, 2]; a.extend([3, 4]); a.append([5, 6]); print(len(a))", "5 ([1, 2, 3, 4, [5, 6]])"], ["t = (10, 20, 30); x, *y = t; print(x, y)", "10 [20, 30] (Kỹ thuật Unpacking)"], ["a = ['bb', 'a', 'ccc']; print(sorted(a, key=len))", "['a', 'bb', 'ccc']"], ["a = [0] * 4; a[1] = 9; print(a)", "[0, 9, 0, 0]"], ["m = [[0]*2]*2; m[0][0] = 5; print(m)", "[[5, 0], [5, 0]] (Lỗi nhân bản tham chiếu list lồng nhau!)"], ["a = [5, 2, 8, 2, 9]; print(a.index(2), a.count(2))", "1 2"], ["a = [1, 2, 3]; b = [4, 5, 6]; print([x+y for x, y in zip(a, b)])", "[5, 7, 9]"], ["a = [12, 5, 18, 7]; print(max(a) - min(a))", "13"], ["a = [1, 2, 3, 4, 5]; a[1:4] = [9]; print(a)", "[1, 9, 5]"], ["t = (5,); print(type(t).__name__)", "tuple (Phải có dấu phẩy mới là tuple 1 phần tử)"], ["a = [4, 7, 2, 9]; print(all(x > 0 for x in a), any(x > 8 for x in a))", "True True"], ["a = [1, 2, 3]; print(a * 2)", "[1, 2, 3, 1, 2, 3]"], ["a = [10, 20, 30]; print(list(enumerate(a, 1)))", "[(1, 10), (2, 20), (3, 30)]"], ["a = [[1, 2], [3, 4]]; flat = [x for r in a for x in r]; print(flat)", "[1, 2, 3, 4]"]], "algo": [["Thuật toán tìm giá trị lớn nhất và vị trí xuất hiện đầu tiên của nó trong mảng A.", "a = list(map(int, input().split()))\nmax_val = max(a)\nprint(max_val, a.index(max_val))"], ["Thuật toán dịch vòng phải mảng A đi K vị trí.", "a = list(map(int, input().split()))\nk = int(input()) % len(a)\nprint(a[-k:] + a[:-k])"], ["Thuật toán chèn phần tử X vào mảng đã sắp xếp tăng dần sao cho mảng vẫn giữ tính tăng dần.", "a = list(map(int, input().split()))\nx = int(input())\npos = len(a)\nfor i in range(len(a)):\n    if a[i] >= x: pos = i; break\na.insert(pos, x)\nprint(a)"], ["Thuật toán trộn 2 mảng đã sắp xếp tăng dần A và B thành 1 mảng tăng dần C (Merge).", "a = list(map(int, input().split()))\nb = list(map(int, input().split()))\ni = j = 0; c = []\nwhile i < len(a) and j < len(b):\n    if a[i] <= b[j]: c.append(a[i]); i += 1\n    else: c.append(b[j]); j += 1\nc.extend(a[i:]); c.extend(b[j:])\nprint(c)"], ["Thuật toán tìm số lớn thứ hai trong danh sách A (bỏ qua giá trị trùng với số lớn nhất).", "a = list(map(int, input().split()))\nm1 = max(a)\nb = [x for x in a if x != m1]\nprint(max(b) if b else 'Khong co')"], ["Thuật toán kiểm tra mảng A có đối xứng hay không.", "a = list(map(int, input().split()))\nprint('CO' if a == a[::-1] else 'KHONG')"], ["Thuật toán đẩy tất cả các số 0 về cuối mảng mà vẫn giữ nguyên thứ tự các số khác 0.", "a = list(map(int, input().split()))\nkhac_0 = [x for x in a if x != 0]\nprint(khac_0 + [0] * (len(a) - len(khac_0)))"], ["Thuật toán tìm độ dài dãy con tăng liên tiếp dài nhất trong mảng A.", "a = list(map(int, input().split()))\nmax_len = cur = 1\nfor i in range(1, len(a)):\n    cur = cur + 1 if a[i] > a[i-1] else 1\n    max_len = max(max_len, cur)\nprint(max_len)"], ["Thuật toán tìm ma trận chuyển vị của ma trận A kích thước M x N.", "m, n = map(int, input().split())\na = [list(map(int, input().split())) for _ in range(m)]\ntrans = [[a[i][j] for i in range(m)] for j in range(n)]\nfor r in trans: print(*r)"], ["Thuật toán tính tổng từng hàng và từng cột của ma trận M x N.", "m, n = map(int, input().split())\na = [list(map(int, input().split())) for _ in range(m)]\nprint('Tong hang:', [sum(r) for r in a])\nprint('Tong cot:', [sum(a[i][j] for i in range(m)) for j in range(n)])"], ["Thuật toán sắp xếp các số chẵn tăng dần, giữ nguyên vị trí các số lẻ trong mảng.", "a = list(map(int, input().split()))\nchan = iter(sorted(x for x in a if x % 2 == 0))\nprint([next(chan) if x % 2 == 0 else x for x in a])"], ["Thuật toán tìm phần tử yên ngựa của ma trận (nhỏ nhất trên hàng của nó và lớn nhất trên cột của nó).", "m, n = map(int, input().split())\na = [list(map(int, input().split())) for _ in range(m)]\nfor i in range(m):\n    min_r = min(a[i])\n    for j in range(n):\n        if a[i][j] == min_r and a[i][j] == max(a[k][j] for k in range(m)):\n            print(i, j, a[i][j])"], ["Thuật toán tìm đoạn con liên tiếp có tổng lớn nhất (Thuật toán Kadane).", "a = list(map(int, input().split()))\nmax_so_far = cur = a[0]\nfor x in a[1:]:\n    cur = max(x, cur + x)\n    max_so_far = max(max_so_far, cur)\nprint(max_so_far)"], ["Thuật toán xóa các phần tử trùng lặp trong mảng mà vẫn giữ nguyên thứ tự xuất hiện đầu tiên.", "a = list(map(int, input().split()))\nkq = []\nfor x in a:\n    if x not in kq: kq.append(x)\nprint(kq)"], ["Thuật toán tìm số tự nhiên nhỏ nhất còn thiếu trong mảng gồm các số từ 1 đến N.", "n = int(input())\na = list(map(int, input().split()))\nprint(n * (n + 1) // 2 - sum(a))"], ["Thuật toán xoay ma trận vuông N x N một góc 90 độ theo chiều kim đồng hồ.", "n = int(input())\na = [list(map(int, input().split())) for _ in range(n)]\nrot = [[a[n-1-j][i] for j in range(n)] for i in range(n)]\nfor r in rot: print(*r)"], ["Thuật toán tính tích vô hướng của 2 vector A và B có cùng độ dài N.", "a = list(map(int, input().split()))\nb = list(map(int, input().split()))\nprint(sum(x * y for x, y in zip(a, b)))"], ["Thuật toán đếm số lượng cặp nghịch thế (i < j mà A[i] > A[j]) trong mảng A.", "a = list(map(int, input().split()))\nn = len(a)\nprint(sum(1 for i in range(n) for j in range(i+1, n) if a[i] > a[j]))"], ["Thuật toán tìm phần tử chiếm đa số (xuất hiện > N/2 lần) bằng giải thuật Boyer-Moore.", "a = list(map(int, input().split()))\ncand = None; cnt = 0\nfor x in a:\n    if cnt == 0: cand = x\n    cnt += 1 if x == cand else -1\nprint(cand if a.count(cand) > len(a)//2 else 'Khong co')"], ["Thuật toán tạo tam giác Pascal N dòng.", "n = int(input())\nrow = [1]\nfor _ in range(n):\n    print(*row)\n    row = [1] + [row[i] + row[i+1] for i in range(len(row)-1)] + [1]"]], "coding": ["Bài 1: Nhập mảng N số nguyên. Tách mảng thành 2 mảng: mảng số chẵn (xếp tăng dần) và mảng số lẻ (xếp giảm dần).", "Bài 2: Nhập mảng N số nguyên. Tìm khoảng cách nhỏ nhất giữa 2 phần tử bất kỳ trong mảng.", "Bài 3: Cho mảng N số nguyên. Tìm dãy con liên tiếp có tổng bằng K dài nhất.", "Bài 4: Nhập ma trận M x N. In các phần tử của ma trận theo đường xoắn ốc từ ngoài vào trong.", "Bài 5: Nhập 2 ma trận A và B cùng kích thước. Tính ma trận tổng A + B và ma trận tích A x B.", "Bài 6: Cho dãy N số nguyên dương. Ghép các số này lại với nhau để tạo thành số tự nhiên lớn nhất có thể (Ví dụ: [9, 91, 95] -> 99591).", "Bài 7: Nhập danh sách điểm thi của N học sinh. Xếp hạng (Rank) cho từng học sinh (điểm bằng nhau thì đồng hạng).", "Bài 8: Cho mảng N số nguyên dương biểu diễn chiều cao các cột. Tính lượng nước mưa tối đa đọng lại giữa các cột (Trapping Rain Water).", "Bài 9: Nhập ma trận vuông N x N. Kiểm tra xem ma trận đó có phải là Ma phương (Magic Square) không.", "Bài 10: Cho N khoảng thời gian [start, end] của các cuộc họp. Gộp các khoảng thời gian bị chồng lấn nhau.", "Bài 11: Tìm độ dài dãy con tăng không nhất thiết liên tiếp dài nhất (LIS) của mảng N phần tử.", "Bài 12: Nhập mảng A gồm N số nguyên. Tìm phần tử đầu tiên bên phải lớn hơn từng phần tử (Next Greater Element).", "Bài 13: Kiểm tra bảng Sudoku 9x9 đã điền đầy đủ có hợp lệ hay không.", "Bài 14: Cho mảng N số nguyên. Chia mảng thành 2 phần có tổng chênh lệch nhỏ nhất.", "Bài 15: Nhập danh sách các điểm (x, y) trên mặt phẳng. Sắp xếp các điểm tăng dần theo khoảng cách tới gốc tọa độ O(0,0).", "Bài 16: Nhập mảng N số nguyên. Tìm số lượng tam giác có thể tạo thành từ 3 phần tử bất kỳ của mảng.", "Bài 17: Cho bàn cờ mìn M x N với vị trí các quả mìn (*). Hãy điền số lượng mìn xung quanh vào các ô trống (.).", "Bài 18: Nhập mảng N số nguyên. Tìm phần tử xuất hiện ở vị trí trung vị (Median).", "Bài 19: Thực hiện phép nhân hai đa thức P(x) và Q(x) thông qua mảng hệ số của chúng.", "Bài 20: Cho dãy N số nguyên. Tìm độ dài đoạn con liên tiếp ngắn nhất có tổng >= S."]}, {"id": "bai6", "title": "Chuyên đề 6: Tập hợp (Set) & Từ điển (Dictionary) - Tối ưu O(1)", "level": "Khá • Chuyên đề 6", "desc": "Cấu trúc bảng băm (Hash Table), loại bỏ trùng lặp siêu tốc với Set, đếm tần suất và ánh xạ khóa-giá trị với Dictionary.", "theory": ["<b>1. Tại sao Set và Dictionary lại nhanh vượt trội?</b><br>Cả hai đều được cài đặt dựa trên <b>Bảng băm (Hash Table)</b>. Phép kiểm tra <code>x in my_set</code> hay <code>key in my_dict</code> chỉ mất thời gian trung bình <b>O(1)</b> (nhanh gấp hàng vạn lần so với tìm trong List mất O(N) khi N = 10⁵).", "<b>2. Các phép toán Tập hợp (Set):</b><br>• Hợp (Union): <code>A | B</code><br>• Giao (Intersection): <code>A & B</code><br>• Hiệu (Difference): <code>A - B</code><br>• Hiệu đối xứng (chỉ thuộc 1 trong 2 tập): <code>A ^ B</code>.", "<b>3. Kỹ thuật đếm tần suất chuẩn với Dictionary:</b><br>• Dùng <code>dem[x] = dem.get(x, 0) + 1</code> để tránh lỗi <code>KeyError</code> khi gặp khóa mới.<br>• Hoặc dùng lớp <code>Counter</code> trong thư viện <code>collections</code>: <code>from collections import Counter; dem = Counter(a)</code>."], "examples": [{"name": "Ví dụ 1: Tìm cặp số có tổng bằng K trong thời gian O(N) (Bài toán Two Sum)", "code": "a = list(map(int, input(\"Nhập dãy số: \").split()))\nk = int(input(\"Nhập tổng K: \"))\nda_thay = {} # Lưu {gia_tri: chi_so}\nfor i, x in enumerate(a):\n    can_tim = k - x\n    if can_tim in da_thay:\n        print(f\"Tìm thấy tại vị trí {da_thay[can_tim]} và {i}: ({can_tim}, {x})\")\n        break\n    da_thay[x] = i", "explain": "Thay vì dùng 2 vòng lặp lồng nhau mất O(N²), dùng Dictionary tra cứu phần bù <code>K - x</code> chỉ mất O(N)."}, {"name": "Ví dụ 2: Thống kê phần tử xuất hiện nhiều nhất", "code": "from collections import Counter\na = list(map(int, input().split()))\ndem = Counter(a)\n# Tìm số có tần suất lớn nhất, nếu bằng nhau chọn số nhỏ hơn\nkq = min(dem.keys(), key=lambda x: (-dem[x], x))\nprint(f\"Phần tử: {kq}, Số lần: {dem[kq]}\")", "explain": "<code>Counter</code> đếm tần suất toàn mảng trong O(N), kết hợp hàm <code>min</code> với khóa kép <code>(-tần_suất, giá_trị)</code>."}], "trace": [["s = {1, 2, 2, 3, 3, 3}; print(len(s))", "3 (Set tự loại bỏ phần tử trùng)"], ["A = {1, 2, 3, 4}; B = {3, 4, 5, 6}; print(A & B, A - B)", "{3, 4} {1, 2}"], ["d = {'a': 1, 'b': 2}; print(d.get('c', 99))", "99 (Không báo lỗi KeyError)"], ["d = {'x': 10}; d['y'] = d.get('x', 0) + 5; print(d['y'])", "15"], ["A = {1, 2}; B = {2, 3}; print(A ^ B)", "{1, 3} (Hiệu đối xứng)"], ["s = set('mississippi'); print(sorted(s))", "['i', 'm', 'p', 's']"], ["d = {x: x**2 for x in range(1, 4)}; print(d[3])", "9 (Dict Comprehension)"], ["d = {'a': 1, 'b': 2}; print(list(d.keys()), list(d.values()))", "['a', 'b'] [1, 2]"], ["A = {1, 2, 3}; B = {1, 2, 3, 4, 5}; print(A.issubset(B))", "True"], ["d = {'a': 10, 'b': 20}; x = d.pop('a'); print(x, len(d))", "10 1"], ["s = set(); s.add(5); s.discard(10); print(s)", "{5} (discard không báo lỗi nếu phần tử không tồn tại)"], ["from collections import Counter; c = Counter('aabbc'); print(c.most_common(1))", "[('a', 2)]"], ["d1 = {'a': 1, 'b': 2}; d2 = {'b': 3, 'c': 4}; d1.update(d2); print(d1)", "{'a': 1, 'b': 3, 'c': 4}"], ["a = [1, 2, 3, 2, 1]; print(len(a) == len(set(a)))", "False (Mảng có phần tử trùng)"], ["d = {'An': 8, 'Binh': 9, 'Chi': 7}; print(max(d, key=d.get))", "Binh (Khóa có giá trị lớn nhất)"], ["s = {10, 20, 30}; print(20 in s, 40 not in s)", "True True"], ["keys = ['a', 'b']; vals = [1, 2]; print(dict(zip(keys, vals)))", "{'a': 1, 'b': 2}"], ["d = {}; d.setdefault('k', []).append(1); d.setdefault('k', []).append(2); print(d)", "{'k': [1, 2]}"], ["A = {1, 2, 3}; B = {4, 5}; print(A.isdisjoint(B))", "True (Hai tập rời nhau)"], ["d = {'a': 1, 'b': 2}; inv = {v: k for k, v in d.items()}; print(inv[2])", "b (Đảo ngược key-value)"]], "algo": [["Thuật toán đếm số lượng giá trị phân biệt trong mảng N phần tử.", "n = int(input())\na = list(map(int, input().split()))\nprint(len(set(a)))"], ["Thuật toán tìm giao của hai mảng số nguyên A và B (in theo thứ tự tăng dần).", "a = set(map(int, input().split()))\nb = set(map(int, input().split()))\nprint(*sorted(a & b))"], ["Thuật toán tìm phần tử duy nhất xuất hiện đúng 1 lần trong mảng (các phần tử khác đều xuất hiện 2 lần).", "from collections import Counter\na = list(map(int, input().split()))\nc = Counter(a)\nfor k, v in c.items():\n    if v == 1: print(k); break"], ["Thuật toán nhóm các từ đồng âm/đảo chữ (Anagrams) lại thành từng nhóm.", "words = input().split()\ngroups = {}\nfor w in words:\n    key = ''.join(sorted(w))\n    groups.setdefault(key, []).append(w)\nprint(list(groups.values()))"], ["Thuật toán đếm số lượng đoạn con liên tiếp có tổng bằng 0 (Prefix Sum + Dict).", "a = list(map(int, input().split()))\ndem = {0: 1}; s = 0; kq = 0\nfor x in a:\n    s += x\n    kq += dem.get(s, 0)\n    dem[s] = dem.get(s, 0) + 1\nprint(kq)"], ["Thuật toán tìm dãy số liên tiếp dài nhất (Longest Consecutive Sequence) trong mảng chưa sắp xếp trong O(N).", "s = set(map(int, input().split()))\nbest = 0\nfor x in s:\n    if x - 1 not in s:\n        y = x + 1\n        while y in s: y += 1\n        best = max(best, y - x)\nprint(best)"], ["Thuật toán kiểm tra mảng A có chứa 2 phần tử trùng nhau cách nhau không quá K vị trí không.", "a = list(map(int, input().split()))\nk = int(input())\npos = {}; ok = False\nfor i, x in enumerate(a):\n    if x in pos and i - pos[x] <= k: ok = True; break\n    pos[x] = i\nprint('CO' if ok else 'KHONG')"], ["Thuật toán hợp nhất 2 từ điển cộng dồn giá trị của các khóa trùng nhau.", "d1 = {'a': 10, 'b': 20}; d2 = {'b': 5, 'c': 15}\nkq = d1.copy()\nfor k, v in d2.items(): kq[k] = kq.get(k, 0) + v\nprint(kq)"], ["Thuật toán tìm các phần tử xuất hiện ở cả 3 dãy số A, B, C.", "a = set(map(int, input().split()))\nb = set(map(int, input().split()))\nc = set(map(int, input().split()))\nprint(*sorted(a & b & c))"], ["Thuật toán đếm số cặp (i, j) với i < j mà |A[i] - A[j]| = K.", "from collections import Counter\na = list(map(int, input().split()))\nk = int(input())\nc = Counter(a)\nprint(sum(c[x] * c[x + k] for x in c) if k > 0 else sum(v*(v-1)//2 for v in c.values()))"], ["Thuật toán tìm từ xuất hiện nhiều thứ nhì trong một đoạn văn bản.", "from collections import Counter\nc = Counter(input().lower().split()).most_common(2)\nprint(c[1][0] if len(c) > 1 else 'Khong co')"], ["Thuật toán kiểm tra hai xâu S và T có đẳng cấu (Isomorphic) với nhau không.", "s, t = input(), input()\nprint(len(s) == len(t) and len(set(s)) == len(set(t)) == len(set(zip(s, t))))"], ["Thuật toán quản lý danh bạ điện thoại đơn giản bằng Dictionary (Thêm, Tìm kiếm, Xóa).", "db = {'An': '0901', 'Binh': '0902'}\ndb['Chi'] = '0903'\nprint(db.get('Binh', 'Khong tim thay'))"], ["Thuật toán tìm phần tử nhỏ nhất xuất hiện trong tất cả các hàng của ma trận M x N.", "m, n = map(int, input().split())\ncommon = set(map(int, input().split()))\nfor _ in range(m - 1): common &= set(map(int, input().split()))\nprint(min(common) if common else -1)"], ["Thuật toán đếm số lượng hình chữ nhật có cạnh song song trục tọa độ tạo bởi N điểm cho trước.", "pts = {tuple(map(int, input().split())) for _ in range(int(input()))}\npts_list = list(pts); dem = 0\nfor i in range(len(pts_list)):\n    for j in range(i + 1, len(pts_list)):\n        x1, y1 = pts_list[i]; x2, y2 = pts_list[j]\n        if x1 != x2 and y1 != y2 and (x1, y2) in pts and (x2, y1) in pts:\n            dem += 1\nprint(dem // 2)"], ["Thuật toán tìm số lượng phần tử ít nhất cần xóa để mọi phần tử trong mảng đều bằng nhau.", "from collections import Counter\na = list(map(int, input().split()))\nprint(len(a) - max(Counter(a).values()))"], ["Thuật toán kiểm tra xem một mảng có thể chia thành các cặp phần tử bằng nhau không.", "from collections import Counter\na = list(map(int, input().split()))\nprint('CO' if all(v % 2 == 0 for v in Counter(a).values()) else 'KHONG')"], ["Thuật toán tìm số may mắn (số có giá trị bằng đúng số lần xuất hiện của nó trong mảng).", "from collections import Counter\nc = Counter(map(int, input().split()))\nlucky = [k for k, v in c.items() if k == v]\nprint(max(lucky) if lucky else -1)"], ["Thuật toán tính số lượng xâu con chứa đầy đủ cả 3 ký tự 'a', 'b', 'c'.", "s = input()\nlast = {'a': -1, 'b': -1, 'c': -1}; kq = 0\nfor i, ch in enumerate(s):\n    if ch in last: last[ch] = i\n    kq += 1 + min(last.values())\nprint(kq)"], ["Thuật toán tìm cặp số (x, y) thuộc 2 mảng A, B sao cho x + y = S.", "a = set(map(int, input().split()))\nb = list(map(int, input().split()))\ns = int(input())\nfor y in b:\n    if s - y in a: print(s - y, y); break"]], "coding": ["Bài 1: Nhập N mã số sinh viên. In ra danh sách các mã hợp lệ không trùng lặp và thống kê số lượt điểm danh từng người.", "Bài 2: Cho 4 mảng số nguyên A, B, C, D cùng kích thước N. Đếm số bộ (i, j, k, l) sao cho A[i] + B[j] + C[k] + D[l] = 0 (Meet-in-the-middle O(N²)).", "Bài 3: Nhập một đoạn văn. Lọc bỏ các từ dừng (stop words) cho trước và in ra Top 5 từ khóa xuất hiện nhiều nhất.", "Bài 4: Cho N cặp bạn bè (u, v). Tìm người có nhiều bạn chung nhất với một người X cho trước.", "Bài 5: Nhập mảng N số nguyên. Đếm số lượng đoạn con liên tiếp có tổng chia hết cho K (K <= 10⁵).", "Bài 6: Cho N điểm trên mặt phẳng Oxy. Tìm số lượng điểm tối đa cùng nằm trên một đường thẳng.", "Bài 7: Viết chương trình kiểm tra chính tả đơn giản bằng cách tra từ điển Set trên 10.000 từ.", "Bài 8: Cho dãy N số nguyên. Tìm độ dài đoạn con liên tiếp dài nhất chứa không quá K giá trị phân biệt (Sliding Window + Dict).", "Bài 9: Nhập danh sách các giao dịch chuyển tiền (Người gửi, Người nhận, Số tiền). Tính số dư cuối cùng của mỗi người.", "Bài 10: Cho 2 mảng A và B. Tìm số lượng phần tử ít nhất cần thêm/bớt để 2 mảng trở thành hoán vị của nhau.", "Bài 11: Tìm độ dài đoạn con liên tiếp dài nhất có số lượng số 0 bằng số lượng số 1 trong mảng nhị phân.", "Bài 12: Nhập một xâu S. Tìm độ dài xâu con liên tiếp dài nhất không có ký tự nào lặp lại.", "Bài 13: Quản lý kho hàng bằng Dictionary: Nhập hàng, Xuất hàng, Cảnh báo mặt hàng tồn kho dưới 5 sản phẩm.", "Bài 14: Cho N đường thẳng y = ax + b. Đếm số cặp đường thẳng cắt nhau (không song song và không trùng nhau).", "Bài 15: Nhập mảng N số nguyên dương. Đếm số cặp (i, j) có tích A[i] * A[j] là một số chính phương.", "Bài 16: Tìm tất cả các bộ 3 số (a, b, c) trong mảng có tổng bằng 0 (3Sum) không trùng lặp.", "Bài 17: Cho đồ thị dưới dạng danh sách cạnh. Biểu diễn đồ thị bằng Dictionary danh sách kề và tính bậc của mỗi đỉnh.", "Bài 18: Thiết kế bộ nhớ đệm LRU Cache dung lượng K sử dụng Dictionary trong Python.", "Bài 19: Nhập chuỗi DNA gồm các ký tự A, C, G, T. Tìm tất cả các chuỗi con độ dài 10 xuất hiện nhiều hơn 1 lần.", "Bài 20: Cho N học sinh đăng ký các câu lạc bộ (mỗi học sinh có thể tham gia nhiều CLB). Tìm nhóm học sinh tham gia đầy đủ tất cả các CLB."]}, {"id": "bai7", "title": "Chuyên đề 7: Hàm (Function), Đệ quy quay lui & File I/O thi HSG", "level": "Nâng cao • Chuyên đề 7", "desc": "Xây dựng hàm chuẩn, tham số mặc định, hàm vô danh lambda, tư duy đệ quy - quay lui (Backtracking) và chuẩn đọc/ghi file .INP/.OUT.", "theory": ["<b>1. Định nghĩa Hàm & Phạm vi biến:</b><br>• Hàm giúp chia nhỏ bài toán, tái sử dụng mã nguồn. Hỗ trợ tham số mặc định <code>def f(x, k=2):</code> và trả về nhiều giá trị cùng lúc <code>return min_v, max_v</code>.<br>• Hàm vô danh <code>lambda x: x[1]</code> thường dùng làm tiêu chí sắp xếp <code>key=...</code>.", "<b>2. Đệ quy (Recursion) & Đệ quy quay lui (Backtracking):</b><br>• Mọi hàm đệ quy bắt buộc phải có <b>Phần neo (Điều kiện dừng)</b> để tránh tràn bộ nhớ ngăn xếp (<code>RecursionError</code>). Python mặc định giới hạn 1000 tầng đệ quy, có thể tăng bằng <code>sys.setrecursionlimit(10**6)</code>.<br>• <b>Quay lui:</b> Thử lần lượt các khả năng tại bước thứ <code>i</code>, gọi đệ quy sang bước <code>i + 1</code>, sau đó trả lại trạng thái ban đầu để thử nhánh khác.", "<b>3. Chuẩn đọc/ghi tệp trong kỳ thi Học sinh giỏi Tin học:</b><br>Chuyển hướng luồng chuẩn giúp chạy nhanh với dữ liệu lớn (10⁵ - 10⁶ dòng):<br><code>sys.stdin = open('BAI1.INP', 'r')</code><br><code>sys.stdout = open('BAI1.OUT', 'w')</code>"], "examples": [{"name": "Ví dụ 1: Đệ quy quay lui sinh tất cả các hoán vị của tập {1, 2, ..., N}", "code": "n = int(input(\"Nhập N: \"))\nx = [0] * (n + 1)\nda_dung = [False] * (n + 1)\n\ndef quay_lui(i):\n    for j in range(1, n + 1):\n        if not da_dung[j]:\n            x[i] = j\n            da_dung[j] = True\n            if i == n:\n                print(*x[1:])\n            else:\n                quay_lui(i + 1)\n            da_dung[j] = False # Trả lại trạng thái (Backtrack)\n\nquay_lui(1)", "explain": "Sử dụng mảng đánh dấu <code>da_dung</code> để đảm bảo mỗi số chỉ xuất hiện 1 lần trong hoán vị."}, {"name": "Ví dụ 2: Lũy thừa nhị phân (Fast Exponentiation) tính a^n % mod trong O(log N)", "code": "def luy_thua(a, n, mod):\n    if n == 0:\n        return 1\n    half = luy_thua(a, n // 2, mod)\n    res = (half * half) % mod\n    if n % 2 == 1:\n        res = (res * a) % mod\n    return res\n\nprint(luy_thua(2, 1000000000, 1000000007))", "explain": "Chia đôi số mũ ở mỗi bước giúp tính lũy thừa bậc 1 tỷ chỉ trong khoảng 30 phép nhân."}], "trace": [["def f(n):\n  if n <= 1: return 1\n  return n * f(n - 1)\nprint(f(4))", "24 (4! = 4*3*2*1)"], ["def g(a, b=5): return a + b\nprint(g(3), g(3, 2))", "8 5"], ["def f(n):\n  if n == 0: return\n  print(n, end=' ')\n  f(n - 1)\nf(3)", "3 2 1"], ["def f(n):\n  if n == 0: return\n  f(n - 1)\n  print(n, end=' ')\nf(3)", "1 2 3 (In sau khi gọi đệ quy nên in ngược từ đáy lên)"], ["sq = lambda x: x * x\nprint(sq(6))", "36"], ["a = [(1, 5), (2, 3), (3, 4)]\na.sort(key=lambda x: x[1])\nprint(a[0])", "(2, 3)"], ["def fib(n):\n  if n <= 2: return 1\n  return fib(n-1) + fib(n-2)\nprint(fib(6))", "8"], ["def gcd(a, b): return a if b == 0 else gcd(b, a % b)\nprint(gcd(42, 30))", "6"], ["def sum_d(n): return 0 if n == 0 else n % 10 + sum_d(n // 10)\nprint(sum_d(456))", "15"], ["x = 10\ndef change():\n  x = 20\nchange(); print(x)", "10 (x bên trong là biến cục bộ)"], ["def f(x, lst=[]):\n  lst.append(x); return lst\nprint(f(1), f(2))", "[1, 2] [1, 2] (Tham số mặc định dạng list dùng chung bộ nhớ)"], ["def p(a, b): return 1 if b == 0 else a * p(a, b - 1)\nprint(p(2, 5))", "32"], ["def hanoi(n): return 1 if n == 1 else 2 * hanoi(n - 1) + 1\nprint(hanoi(4))", "15 (Số bước chuyển tháp Hà Nội 4 đĩa)"], ["def rev(s): return s if len(s) <= 1 else rev(s[1:]) + s[0]\nprint(rev('abc'))", "cba"], ["def f(n): return 1 if n < 10 else 1 + f(n // 10)\nprint(f(98765))", "5 (Đếm số chữ số)"], ["a = [1, -4, 3, -2]; print(sorted(a, key=abs))", "[1, -2, 3, -4]"], ["def f(n):\n  if n <= 0: return 0\n  return n + f(n - 2)\nprint(f(7))", "16 (7 + 5 + 3 + 1 = 16)"], ["def pal(s): return True if len(s) <= 1 else (s[0] == s[-1] and pal(s[1:-1]))\nprint(pal('radar'))", "True"], ["def c(n, k): return 1 if k == 0 or k == n else c(n-1, k-1) + c(n-1, k)\nprint(c(5, 2))", "10 (Tổ hợp chập 2 của 5)"], ["def to_bin(n): return str(n) if n < 2 else to_bin(n // 2) + str(n % 2)\nprint(to_bin(10))", "1010"]], "algo": [["Thuật toán đệ quy quay lui liệt kê tất cả các xâu nhị phân độ dài N.", "n = int(input())\ndef sinh(s):\n    if len(s) == n: print(s); return\n    sinh(s + '0')\n    sinh(s + '1')\nsinh('')"], ["Thuật toán đệ quy giải bài toán Tháp Hà Nội chuyển N đĩa từ cọc A sang cọc C qua cọc trung gian B.", "def hanoi(n, a, b, c):\n    if n == 1:\n        print(f'{a} -> {c}'); return\n    hanoi(n - 1, a, c, b)\n    print(f'{a} -> {c}')\n    hanoi(n - 1, b, a, c)\nhanoi(int(input()), 'A', 'B', 'C')"], ["Thuật toán đệ quy quay lui liệt kê tất cả các tổ hợp chập K của N phần tử {1..N}.", "n, k = map(int, input().split())\nx = [0] * (k + 1)\ndef to_hop(i):\n    for j in range(x[i-1] + 1, n - k + i + 1):\n        x[i] = j\n        if i == k: print(*x[1:])\n        else: to_hop(i + 1)\nto_hop(1)"], ["Thuật toán đọc dữ liệu từ tệp 'TONG.INP' gồm nhiều dòng, tính tổng mỗi dòng và ghi ra 'TONG.OUT'.", "with open('TONG.INP', 'r') as f, open('TONG.OUT', 'w') as out:\n    for line in f:\n        if line.strip():\n            out.write(str(sum(map(int, line.split()))) + '\\n')"], ["Thuật toán đệ quy có nhớ (Memoization) tính số Fibonacci thứ N trong O(N).", "memo = {1: 1, 2: 1}\ndef fib(n):\n    if n not in memo: memo[n] = fib(n-1) + fib(n-2)\n    return memo[n]\nprint(fib(int(input())))"], ["Thuật toán đệ quy tìm giá trị lớn nhất trong mảng A bằng phương pháp Chia để trị.", "def find_max(a, l, r):\n    if l == r: return a[l]\n    mid = (l + r) // 2\n    return max(find_max(a, l, mid), find_max(a, mid + 1, r))\na = list(map(int, input().split()))\nprint(find_max(a, 0, len(a) - 1))"], ["Thuật toán quay lui liệt kê tất cả các cách phân tích số nguyên dương N thành tổng các số nguyên dương.", "n = int(input())\ndef phan_tich(con_lai, min_val, kq):\n    if con_lai == 0: print(' + '.join(map(str, kq))); return\n    for i in range(min_val, con_lai + 1):\n        phan_tich(con_lai - i, i, kq + [i])\nphan_tich(n, 1, [])"], ["Thuật toán quay lui sinh tất cả các dãy ngoặc đúng độ dài 2N.", "n = int(input())\ndef ngoac(s, mo, dong):\n    if len(s) == 2 * n: print(s); return\n    if mo < n: ngoac(s + '(', mo + 1, dong)\n    if dong < mo: ngoac(s + ')', mo, dong + 1)\nngoac('', 0, 0)"], ["Thuật toán đệ quy tính tổ hợp C(n, k) theo công thức Pascal.", "def C(n, k):\n    if k == 0 or k == n: return 1\n    return C(n - 1, k - 1) + C(n - 1, k)\nn, k = map(int, input().split())\nprint(C(n, k))"], ["Thuật toán quay lui tìm tất cả các tập con của mảng A có tổng bằng S.", "a = list(map(int, input().split()))\ns = int(input())\ndef tap_con(i, tong, cur):\n    if tong == s: print(cur); return\n    if i == len(a) or tong > s: return\n    tap_con(i + 1, tong + a[i], cur + [a[i]])\n    tap_con(i + 1, tong, cur)\ntap_con(0, 0, [])"], ["Thuật toán chuẩn hóa luồng nhập xuất chuẩn cho kỳ thi HSG.", "import sys\nsys.stdin = open('BAI1.INP', 'r')\nsys.stdout = open('BAI1.OUT', 'w')\nn = int(sys.stdin.readline())\nprint(n * 2)"], ["Thuật toán đệ quy tính hàm Ackermann A(m, n).", "def ack(m, n):\n    if m == 0: return n + 1\n    if n == 0: return ack(m - 1, 1)\n    return ack(m - 1, ack(m, n - 1))\nprint(ack(2, 3))"], ["Thuật toán quay lui sinh chỉnh hợp không lặp chập K của N.", "n, k = map(int, input().split())\nused = [False]*(n+1); x = [0]*(k+1)\ndef chinh_hop(i):\n    for j in range(1, n + 1):\n        if not used[j]:\n            x[i] = j; used[j] = True\n            if i == k: print(*x[1:])\n            else: chinh_hop(i + 1)\n            used[j] = False\nchinh_hop(1)"], ["Thuật toán đệ quy tính tổng các phần tử của danh sách lồng nhau nhiều cấp.", "def tong_sau(lst):\n    s = 0\n    for x in lst:\n        s += tong_sau(x) if isinstance(x, list) else x\n    return s\nprint(tong_sau([1, [2, [3, 4]], 5]))"], ["Thuật toán đệ quy tìm kiếm nhị phân trên mảng đã sắp xếp.", "def bsearch(a, l, r, x):\n    if l > r: return -1\n    mid = (l + r) // 2\n    if a[mid] == x: return mid\n    return bsearch(a, mid+1, r, x) if a[mid] < x else bsearch(a, l, mid-1, x)\na = [2, 5, 8, 12, 16]\nprint(bsearch(a, 0, len(a)-1, 12))"], ["Thuật toán quay lui sinh tất cả các hoán vị của một xâu ký tự (có thể chứa ký tự trùng).", "s = sorted(input())\nused = [False]*len(s)\ndef perm(cur):\n    if len(cur) == len(s): print(cur); return\n    for i in range(len(s)):\n        if used[i] or (i > 0 and s[i] == s[i-1] and not used[i-1]): continue\n        used[i] = True; perm(cur + s[i]); used[i] = False\nperm('')"], ["Thuật toán đệ quy kiểm tra mảng A có sắp xếp tăng dần không.", "def is_sorted(a, n):\n    if n <= 1: return True\n    return a[n-2] <= a[n-1] and is_sorted(a, n - 1)\na = [1, 3, 5, 7]\nprint(is_sorted(a, len(a)))"], ["Thuật toán quay lui tìm đường đi từ ô (0,0) đến (M-1, N-1) trong mê cung chỉ đi Xuống hoặc Sang phải.", "m, n = map(int, input().split())\ndef di(r, c, path):\n    if r == m - 1 and c == n - 1: print(path); return\n    if r + 1 < m: di(r + 1, c, path + 'D')\n    if c + 1 < n: di(r, c + 1, path + 'R')\ndi(0, 0, '')"], ["Thuật toán đệ quy vẽ thước kẻ vạch chia (Fractal Ruler).", "def ruler(n):\n    if n == 0: return\n    ruler(n - 1)\n    print('-' * n)\n    ruler(n - 1)\nruler(3)"], ["Thuật toán đếm số vùng liên thông (đảo số 1) trên lưới nhị phân bằng đệ quy loang (DFS).", "def loang(g, r, c):\n    if r < 0 or c < 0 or r >= len(g) or c >= len(g[0]) or g[r][c] == 0: return\n    g[r][c] = 0\n    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]: loang(g, r+dr, c+dc)"]], "coding": ["Bài 1: Giải bài toán N Quân Hậu (N-Queens): Đặt N quân hậu lên bàn cờ N x N sao cho không quân nào ăn được nhau. In tất cả nghiệm.", "Bài 2: Giải bài toán Mã đi tuần (Knight's Tour): Tìm hành trình cho quân Mã đi qua tất cả các ô của bàn cờ 5x5, mỗi ô đúng 1 lần.", "Bài 3: Viết chương trình giải Sudoku 9x9 tự động bằng kỹ thuật đệ quy quay lui.", "Bài 4: Cho N món đồ mỗi món có trọng lượng w[i] và giá trị v[i], ba lô sức chứa W. Tìm cách chọn đồ bằng quay lui nhánh cận.", "Bài 5: Bài toán Người du lịch (TSP): Tìm hành trình đi qua N thành phố (N <= 12) và quay về điểm xuất phát với tổng chi phí nhỏ nhất.", "Bài 6: Cho tập hợp N số nguyên dương. Chia tập hợp này thành K tập con có tổng bằng nhau (nếu có thể).", "Bài 7: Viết chương trình đọc tệp văn bản 'VANBAN.TXT', thống kê số dòng, số từ, số ký tự và lưu báo cáo sang 'THONGKE.TXT'.", "Bài 8: Bài toán ATM: Có N tờ tiền với mệnh giá bất kỳ. Tìm số tờ tiền ít nhất để trả đúng số tiền S bằng quay lui nhánh cận.", "Bài 9: Cho lưới chữ cái M x N và một từ W. Kiểm tra xem từ W có thể tạo thành bằng cách đi nối tiếp các ô kề cạnh không (Word Search).", "Bài 10: Sinh tất cả các xâu nhị phân độ dài N sao cho không có hai số 1 nào đứng cạnh nhau.", "Bài 11: Điền dấu '+' hoặc '-' vào giữa các số từ 1 đến 9 để tạo thành biểu thức có tổng bằng 100.", "Bài 12: Tìm đường đi ngắn nhất thoát khỏi mê cung có chướng ngại vật (tường '#') từ điểm S đến điểm E.", "Bài 13: Bài toán Tô màu đồ thị: Kiểm tra xem có thể tô màu N đỉnh của đồ thị bằng tối đa M màu sao cho 2 đỉnh kề nhau khác màu không.", "Bài 14: Cho chuỗi số điện thoại (ví dụ '23'). Liệt kê tất cả tổ hợp chữ cái tương ứng trên bàn phím điện thoại cổ điển.", "Bài 15: Tách một xâu S thành các xâu con sao cho mỗi xâu con đều là xâu đối xứng (Palindrome Partitioning).", "Bài 16: Tính diện tích vùng nước lớn nhất (vùng số 0 lớn nhất) trên bản đồ lưới M x N bằng kỹ thuật đệ quy loang.", "Bài 17: Cho danh sách điểm thi lưu trong tệp 'DIEM.INP'. Đọc dữ liệu, xếp loại và xuất bảng điểm chuẩn ra 'XEPLOAI.OUT'.", "Bài 18: Sinh tất cả các dãy số tăng gồm K phần tử lấy từ đoạn [1, N] và tính tổng số dãy sinh được.", "Bài 19: Viết hàm đệ quy giải thuật sắp xếp trộn (Merge Sort) và sắp xếp nhanh (Quick Sort).", "Bài 20: Tìm số bước ít nhất để biến đổi xâu A thành xâu B thông qua 3 phép toán: Thêm, Xóa, Thay thế ký tự."]}, {"id": "bai8", "title": "Chuyên đề 8: Thuật toán Chuyên sâu & Tối ưu thi Học sinh giỏi", "level": "Chuyên sâu / HSG • Chuyên đề 8", "desc": "Sàng nguyên tố Eratosthenes, Mảng cộng dồn 1D/2D (Prefix Sum), Hai con trỏ (Two Pointers), Tìm kiếm nhị phân (Binary Search) và Quy hoạch động.", "theory": ["<b>1. Sàng nguyên tố Eratosthenes:</b> Đánh dấu các bội số của từng số nguyên tố từ 2 đến √N. Giúp trả lời truy vấn kiểm tra nguyên tố trong <b>O(1)</b> với giới hạn N ≤ 10⁷.", "<b>2. Mảng cộng dồn (Prefix Sum):</b> Xây dựng mảng <code>P[i] = A[1] + ... + A[i]</code> trong O(N). Tổng đoạn con từ L đến R được tính tức thì: <code>Sum(L, R) = P[R] - P[L - 1]</code> trong <b>O(1)</b>.", "<b>3. Tìm kiếm nhị phân trên đáp án (Binary Search on Answer):</b> Khi bài toán hỏi <i>'Tìm giá trị nhỏ nhất thỏa mãn điều kiện...'</i> hoặc <i>'lớn nhất thỏa mãn...'</i> và hàm kiểm tra có tính đơn điệu, ta chặt nhị phân trên miền giá trị kết quả.", "<b>4. Quy hoạch động (Dynamic Programming - DP):</b> Chia bài toán lớn thành các bài toán con gối nhau, lưu kết quả vào bảng phương án <code>dp[]</code> để tránh tính lại (Ví dụ: Bài toán Cái túi 0/1, Dãy con tăng dài nhất, Đổi tiền)."], "examples": [{"name": "Ví dụ 1: Mảng cộng dồn trả lời Q truy vấn tính tổng đoạn [L, R] trong O(1)", "code": "n, q = map(int, input().split())\na = [0] + list(map(int, input().split()))\np = [0] * (n + 1)\nfor i in range(1, n + 1):\n    p[i] = p[i - 1] + a[i]\n\nfor _ in range(q):\n    l, r = map(int, input().split())\n    print(p[r] - p[l - 1])", "explain": "Giảm độ phức tạp từ O(N × Q) xuống còn O(N + Q), chạy dưới 0.2 giây với N, Q = 10⁵."}, {"name": "Ví dụ 2: Quy hoạch động bài toán Cái túi 0/1 (0/1 Knapsack)", "code": "n, W = map(int, input().split())\ndp = [0] * (W + 1)\nfor _ in range(n):\n    w, v = map(int, input().split())\n    for j in range(W, w - 1, -1):\n        dp[j] = max(dp[j], dp[j - w] + v)\nprint(\"Giá trị lớn nhất:\", dp[W])", "explain": "Duyệt ngược trọng lượng <code>j</code> từ <code>W</code> về <code>w</code> giúp tối ưu bộ nhớ mảng DP xuống chỉ còn 1 chiều."}], "trace": [["a = [0, 3, 5, 2, 7]; p = [0, 3, 8, 10, 17]; print(p[4] - p[1])", "14 (Tổng từ vị trí 2 đến 4: 5 + 2 + 7 = 14)"], ["import bisect; a = [2, 4, 4, 7, 9]; print(bisect.bisect_left(a, 4), bisect.bisect_right(a, 4))", "1 3"], ["dp = [1, 2, 3, 5, 8]; print(dp[-1])", "8 (Quy hoạch động bậc thang)"], ["prime = [True]*10; prime[0]=prime[1]=False\nfor i in range(2, 4):\n  if prime[i]:\n    for j in range(i*i, 10, i): prime[j] = False\nprint(sum(prime))", "4 (Các SNT < 10: 2, 3, 5, 7)"], ["l, r = 1, 100; mid = (l + r) // 2; print(mid)", "50"], ["a = [1, 3, 5, 7, 9]; l, r = 0, 4\nwhile l < r:\n  if a[l] + a[r] == 10: print(a[l], a[r]); break\n  elif a[l] + a[r] < 10: l += 1\n  else: r -= 1", "1 9 (Kỹ thuật Hai con trỏ)"], ["dp = [0]*6; dp[0] = 1\nfor coin in [1, 2]:\n  for j in range(coin, 6): dp[j] += dp[j - coin]\nprint(dp[5])", "3 (Số cách đổi 5đ từ xu 1đ, 2đ: 1+1+1+1+1, 1+1+1+2, 1+2+2)"], ["a = [3, 1, 4, 2]; dp = [1]*4\nfor i in range(4):\n  for j in range(i):\n    if a[j] < a[i]: dp[i] = max(dp[i], dp[j] + 1)\nprint(max(dp))", "3 (Dãy con tăng dài nhất: 1, 2 hoặc 3, 4 -> dài 2; ở đây [1, 4] dài 2, [3, 4] dài 2 -> kết quả đúng là 2)"], ["diff = [0]*6; diff[1] += 5; diff[4] -= 5\nfor i in range(1, 5): diff[i] += diff[i-1]\nprint(diff[1:5])", "[5, 5, 5, 0] (Mảng hiệu - Difference Array)"], ["import bisect; a = [10, 20, 30]; bisect.insort(a, 25); print(a)", "[10, 20, 25, 30]"], ["n = 16; print(n & (n - 1) == 0)", "True (Kiểm tra lũy thừa của 2 bằng phép toán bit)"], ["a = [4, 2, 4, 5, 5]; x = 0\nfor v in a: x ^= v\nprint(x)", "2 (Phép XOR tìm phần tử lẻ cặp)"], ["l, r = 0, 10; steps = 0\nwhile l <= r: mid = (l+r)//2; steps += 1; l = mid + 1\nprint(steps)", "4 (Số bước tìm kiếm nhị phân)"], ["dp = [[1]*3 for _ in range(3)]\nfor i in range(1,3):\n  for j in range(1,3): dp[i][j] = dp[i-1][j] + dp[i][j-1]\nprint(dp[2][2])", "6 (Số đường đi trên lưới 3x3)"], ["a = [2, 1, 5, 1, 3, 2]; k = 3\ns = max(sum(a[i:i+k]) for i in range(len(a)-k+1))\nprint(s)", "9 (Cửa sổ trượt độ dài 3: 5 + 1 + 3 = 9)"], ["import heapq; h = [5, 1, 8, 3]; heapq.heapify(h); print(heapq.heappop(h))", "1 (Hàng đợi ưu tiên Min-Heap)"], ["spf = list(range(10))\nfor i in range(2, 4):\n  if spf[i] == i:\n    for j in range(i*i, 10, i): spf[j] = min(spf[j], i)\nprint(spf[6], spf[9])", "2 3 (Sàng ước nguyên tố nhỏ nhất)"], ["a = [1, 2, 3, 4]; p = 1; res = []\nfor x in a: res.append(p); p *= x\nprint(res)", "[1, 1, 2, 6] (Tích tiền tố)"], ["s = 'abcde'; print(ord('e') - ord('a'))", "4"], ["dp = [10**9]*6; dp[0] = 0\nfor c in [1, 3, 4]:\n  for j in range(c, 6): dp[j] = min(dp[j], dp[j-c] + 1)\nprint(dp[5])", "2 (Đổi 5đ dùng ít xu nhất: 1 + 4 = 2 xu)"]], "algo": [["Thuật toán Sàng số nguyên tố Eratosthenes tìm tất cả SNT <= N.", "n = int(input())\nprime = [True] * (n + 1)\nprime[0] = prime[1] = False\nfor i in range(2, int(n**0.5) + 1):\n    if prime[i]:\n        for j in range(i * i, n + 1, i): prime[j] = False\nprint([i for i in range(2, n + 1) if prime[i]])"], ["Thuật toán Cửa sổ trượt (Sliding Window) tìm tổng lớn nhất của K phần tử liên tiếp.", "n, k = map(int, input().split())\na = list(map(int, input().split()))\ncur = best = sum(a[:k])\nfor i in range(k, n):\n    cur += a[i] - a[i - k]\n    best = max(best, cur)\nprint(best)"], ["Thuật toán Tìm kiếm nhị phân trên đáp án: Chặt gỗ lấy ít nhất M mét gỗ từ N cây (bài toán EKO).", "n, m = map(int, input().split())\nh = list(map(int, input().split()))\nl, r, ans = 0, max(h), 0\nwhile l <= r:\n    mid = (l + r) // 2\n    go = sum(x - mid for x in h if x > mid)\n    if go >= m: ans = mid; l = mid + 1\n    else: r = mid - 1\nprint(ans)"], ["Thuật toán Quy hoạch động bài toán Leo cầu thang (mỗi bước 1, 2 hoặc 3 bậc).", "n = int(input())\ndp = [0] * (max(4, n + 1))\ndp[0] = dp[1] = 1; dp[2] = 2\nfor i in range(3, n + 1): dp[i] = dp[i-1] + dp[i-2] + dp[i-3]\nprint(dp[n])"], ["Thuật toán Quy hoạch động Đổi tiền: Tìm số tờ tiền ít nhất để đổi số tiền S.", "n, s = map(int, input().split())\ncoins = list(map(int, input().split()))\ndp = [10**9] * (s + 1); dp[0] = 0\nfor c in coins:\n    for j in range(c, s + 1):\n        dp[j] = min(dp[j], dp[j - c] + 1)\nprint(dp[s] if dp[s] < 10**9 else -1)"], ["Thuật toán Hai con trỏ tìm đoạn con liên tiếp ngắn nhất có tổng >= S.", "n, s = map(int, input().split())\na = list(map(int, input().split()))\nl = cur = 0; ans = n + 1\nfor r in range(n):\n    cur += a[r]\n    while cur >= s:\n        ans = min(ans, r - l + 1)\n        cur -= a[l]; l += 1\nprint(ans if ans <= n else 0)"], ["Thuật toán Mảng hiệu (Difference Array): Thực hiện Q truy vấn tăng đoạn [L, R] thêm V trong O(N + Q).", "n, q = map(int, input().split())\nd = [0] * (n + 2)\nfor _ in range(q):\n    l, r, v = map(int, input().split())\n    d[l] += v; d[r + 1] -= v\nfor i in range(1, n + 1):\n    d[i] += d[i - 1]\n    print(d[i], end=' ')"], ["Thuật toán Sàng ước nguyên tố nhỏ nhất (SPF) để phân tích nhanh Q số ra thừa số nguyên tố.", "MAXN = 100000\nspf = list(range(MAXN + 1))\nfor i in range(2, int(MAXN**0.5) + 1):\n    if spf[i] == i:\n        for j in range(i * i, MAXN + 1, i):\n            if spf[j] == j: spf[j] = i"], ["Thuật toán Tham lam chọn hoạt động không giao nhau nhiều nhất (Activity Selection).", "n = int(input())\nev = sorted([tuple(map(int, input().split())) for _ in range(n)], key=lambda x: x[1])\ndem = 0; last_end = -1\nfor s, e in ev:\n    if s >= last_end: dem += 1; last_end = e\nprint(dem)"], ["Thuật toán Tìm dãy con tăng dài nhất (LIS) tối ưu O(N log N) bằng bisect.", "import bisect\na = list(map(int, input().split()))\ntails = []\nfor x in a:\n    idx = bisect.bisect_left(tails, x)\n    if idx == len(tails): tails.append(x)\n    else: tails[idx] = x\nprint(len(tails))"], ["Thuật toán Mảng cộng dồn 2 chiều (2D Prefix Sum) tính tổng hình chữ nhật con.", "m, n = map(int, input().split())\na = [list(map(int, input().split())) for _ in range(m)]\np = [[0]*(n+1) for _ in range(m+1)]\nfor i in range(1, m+1):\n    for j in range(1, n+1):\n        p[i][j] = a[i-1][j-1] + p[i-1][j] + p[i][j-1] - p[i-1][j-1]"], ["Thuật toán BFS tìm đường đi ngắn nhất trên đồ thị không trọng số.", "from collections import deque\ndef bfs(adj, start, n):\n    dist = [-1]*(n+1); dist[start] = 0; q = deque([start])\n    while q:\n        u = q.popleft()\n        for v in adj[u]:\n            if dist[v] == -1: dist[v] = dist[u] + 1; q.append(v)\n    return dist"], ["Thuật toán Quy hoạch động Xâu con chung dài nhất (LCS) của 2 xâu A và B.", "a, b = input(), input()\nm, n = len(a), len(b)\ndp = [[0]*(n+1) for _ in range(m+1)]\nfor i in range(1, m+1):\n    for j in range(1, n+1):\n        dp[i][j] = dp[i-1][j-1] + 1 if a[i-1] == b[j-1] else max(dp[i-1][j], dp[i][j-1])\nprint(dp[m][n])"], ["Thuật toán Tham lam nối dây với chi phí nhỏ nhất bằng Min-Heap (heapq).", "import heapq\nh = list(map(int, input().split()))\nheapq.heapify(h); cost = 0\nwhile len(h) > 1:\n    x = heapq.heappop(h) + heapq.heappop(h)\n    cost += x; heapq.heappush(h, x)\nprint(cost)"], ["Thuật toán Tìm kiếm nhị phân vị trí xuất hiện đầu tiên và cuối cùng của X trong mảng tăng dần.", "import bisect\na = list(map(int, input().split()))\nx = int(input())\nl = bisect.bisect_left(a, x); r = bisect.bisect_right(a, x)\nprint((l, r - 1) if l < r else (-1, -1))"], ["Thuật toán Quy hoạch động Đường đi có tổng lớn nhất trên lưới số M x N.", "m, n = map(int, input().split())\na = [list(map(int, input().split())) for _ in range(m)]\ndp = [[0]*n for _ in range(m)]\nfor i in range(m):\n    for j in range(n):\n        top = dp[i-1][j] if i > 0 else 0\n        left = dp[i][j-1] if j > 0 else 0\n        dp[i][j] = a[i][j] + max(top, left)\nprint(dp[m-1][n-1])"], ["Thuật toán Đếm số cặp phần tử có tổng <= K trên mảng đã sắp xếp bằng Hai con trỏ.", "a = sorted(map(int, input().split()))\nk = int(input())\nl, r, dem = 0, len(a) - 1, 0\nwhile l < r:\n    if a[l] + a[r] <= k: dem += r - l; l += 1\n    else: r -= 1\nprint(dem)"], ["Thuật toán Tìm ước chung lớn nhất của một đoạn [L, R] bằng chia để trị / Segment Tree cơ bản.", "import math\na = list(map(int, input().split()))\nl, r = map(int, input().split())\ng = 0\nfor i in range(l, r + 1): g = math.gcd(g, a[i])\nprint(g)"], ["Thuật toán Sinh số siêu nguyên tố có N chữ số bằng BFS.", "from collections import deque\nn = int(input())\nq = deque([2, 3, 5, 7])\ndef snt(x):\n    for i in range(2, int(x**0.5)+1):\n        if x % i == 0: return False\n    return True\nwhile q:\n    u = q.popleft()\n    if len(str(u)) == n: print(u, end=' '); continue\n    for d in [1, 3, 7, 9]:\n        if snt(u*10 + d): q.append(u*10 + d)"], ["Thuật toán Tìm kiếm nhị phân tìm căn bậc ba chính xác đến 10^-6 của số thực X.", "x = float(input())\nl, r = min(-1.0, x), max(1.0, x)\nfor _ in range(100):\n    mid = (l + r) / 2\n    if mid**3 < x: l = mid\n    else: r = mid\nprint(f'{l:.6f}')"]], "coding": ["Bài 1: Đếm số lượng số nguyên tố trong đoạn [L, R] với L, R <= 10^12 và R - L <= 10^6 (Sàng nguyên tố trên đoạn - Segmented Sieve).", "Bài 2: Cho mảng N số nguyên (N <= 10^5). Tìm đoạn con liên tiếp có độ dài >= K và có trung bình cộng lớn nhất (Chặt nhị phân + Prefix Sum).", "Bài 3: Bài toán Phân công công việc: Có N công việc và K máy. Tìm thời gian hoàn thành sớm nhất bằng Tìm kiếm nhị phân trên đáp án.", "Bài 4: Cho N thanh gỗ. Cắt các thanh gỗ này để được đúng K đoạn bằng nhau có độ dài nguyên lớn nhất.", "Bài 5: Quy hoạch động Dãy con có tổng bằng S (Subset Sum): Kiểm tra xem có thể chọn một số phần tử trong mảng để tổng bằng S không.", "Bài 6: Quy hoạch động Biến đổi xâu (Edit Distance): Tìm số phép biến đổi ít nhất từ xâu A sang xâu B.", "Bài 7: Cho ma trận M x N toàn số 0 và 1. Tìm diện tích hình vuông toàn số 1 lớn nhất bằng Quy hoạch động.", "Bài 8: Cho ma trận M x N toàn số 0 và 1. Tìm diện tích hình chữ nhật toàn số 1 lớn nhất bằng Ngăn xếp đơn điệu (Monotonic Stack).", "Bài 9: Thuật toán Dijkstra tìm đường đi ngắn nhất trên đồ thị có trọng số không âm (N, M <= 10^5).", "Bài 10: Cấu trúc Disjoint Set Union (DSU): Quản lý các thành phần liên thông khi thêm cạnh dần vào đồ thị.", "Bài 11: Tìm cây khung nhỏ nhất (Minimum Spanning Tree) của đồ thị bằng thuật toán Kruskal.", "Bài 12: Đếm số lượng số đẹp trong đoạn [A, B] (A, B <= 10^18) thỏa mãn tổng chữ số chia hết cho K (Quy hoạch động chữ số - Digit DP).", "Bài 13: Bài toán Xếp lịch họp có trọng số (Weighted Interval Scheduling): Chọn các cuộc họp không giao nhau để tổng tiền thù lao lớn nhất.", "Bài 14: Cho dãy N số nguyên. Tìm số lượng nghịch thế của mảng trong thời gian O(N log N) bằng Merge Sort hoặc Fenwick Tree.", "Bài 15: Bài toán Chia kẹo: N đứa trẻ đứng thành hàng ngang, mỗi bé có điểm ngoan. Chia kẹo sao cho bé ngoan hơn bạn bên cạnh thì được nhiều kẹo hơn, tổng kẹo ít nhất.", "Bài 16: Tìm đường đi có chi phí nhỏ nhất từ đỉnh 1 đến đỉnh N trên đồ thị có cạnh âm (Thuật toán Bellman-Ford).", "Bài 17: Cho xâu S độ dài <= 10^5. Trả lời Q truy vấn kiểm tra xâu con S[L..R] có đối xứng không trong O(1) bằng Hashing (Băm xâu).", "Bài 18: Bài toán Nhân chuỗi ma trận (Matrix Chain Multiplication): Tìm thứ tự nhân N ma trận sao cho số phép nhân cơ bản ít nhất.", "Bài 19: Trò chơi bốc sỏi Nim & Quy hoạch động trò chơi: Xác định người thắng cuộc nếu cả hai đều chơi tối ưu.", "Bài 20: Đề tổng hợp HSG: Cho N trạm phát sóng trên trục Ox. Tìm bán kính phủ sóng R nhỏ nhất để K trạm phát phủ kín tất cả các ngôi nhà."]}];
 
-chu_vi = (a + b) * 2
-dien_tich = a * b
-
-print(f"Chu vi = {chu_vi}, Diện tích = {dien_tich:.2f}")`,
-          exercise: "Viết chương trình nhập vào số giây tổng cộng N (ví dụ 3665), quy đổi ra định dạng Giờ : Phút : Giây."
-        }
-      },
-      {
-        title: "Bài 2: Cấu trúc rẽ nhánh (if - elif - else) & Toán tử logic",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 2 • Cơ bản",
-        desc: "Cách viết điều kiện rẽ nhánh, biểu thức so sánh, kết hợp điều kiện với and, or, not và toán tử ba ngôi.",
-        lesson: {
-          theory: [
-            "Python dùng <b>thụt đầu dòng (4 dấu cách hoặc 1 Tab)</b> để phân chia khối lệnh thay cho dấu ngoặc nhọn.",
-            "Cấu trúc đầy đủ: <code>if điều_kiện_1: ... elif điều_kiện_2: ... else: ...</code>",
-            "<b>Biểu thức điều kiện rút gọn:</b> <code>kq = 'Chẵn' if n % 2 == 0 else 'Lẻ'</code>."
-          ],
-          code: `# Kiểm tra năm nhuận dương lịch
-nam = int(input("Nhập năm cần kiểm tra: "))
-
-if (nam % 400 == 0) or (nam % 4 == 0 and nam % 100 != 0):
-    print(f"Năm {nam} là năm nhuận.")
-else:
-    print(f"Năm {nam} không phải năm nhuận.")`,
-          exercise: "Nhập vào 3 cạnh a, b, c. Kiểm tra xem 3 cạnh có tạo thành tam giác không, nếu có thì là tam giác gì (đều, cân, vuông, thường)?"
-        }
-      },
-      {
-        title: "Bài 3: Vòng lặp (for, while) & Kỹ thuật đặt lính canh, cộng dồn",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 3 • Cơ bản",
-        desc: "Sử dụng hàm range(), vòng lặp vô tận while, câu lệnh điều khiển break, continue và bài toán đếm/tính tổng.",
-        lesson: {
-          theory: [
-            "<b>Hàm range(start, stop, step):</b> Sinh dãy số từ <code>start</code> đến <code>stop - 1</code> với bước nhảy <code>step</code>.",
-            "<b>Vòng lặp while:</b> Dùng khi chưa biết trước số lần lặp (ví dụ: tách từng chữ số của một số nguyên N).",
-            "<b>break</b> thoát hẳn khỏi vòng lặp; <b>continue</b> bỏ qua lượt hiện tại để sang lượt tiếp theo."
-          ],
-          code: `# Tính tổng các chữ số của số nguyên dương N
-n = int(input("Nhập số nguyên dương N: "))
-tong = 0
-tam = n
-
-while tam > 0:
-    chu_so = tam % 10   # Lấy chữ số hàng đơn vị
-    tong += chu_so      # Cộng dồn vào tổng
-    tam //= 10          # Bỏ chữ số hàng đơn vị
-
-print(f"Tổng các chữ số của {n} là: {tong}")`,
-          exercise: "Nhập số nguyên dương N. Kiểm tra xem N có phải là số nguyên tố hay không?"
-        }
-      },
-      {
-        title: "Bài 4: Xử lý Xâu ký tự (String) & Kỹ thuật cắt lát (Slicing)",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 4 • Trung bình",
-        desc: "Chỉ số âm/dương trong xâu, kỹ thuật Slicing [start:end:step], chuẩn hóa xâu và các hàm xử lý chuỗi thông dụng.",
-        lesson: {
-          theory: [
-            "<b>Kỹ thuật Slicing:</b> <code>s[::-1]</code> giúp đảo ngược xâu cực nhanh chỉ trong 1 dòng.",
-            "<b>Các phương thức quan trọng:</b> <code>split()</code> (tách từ), <code>join()</code> (nối từ), <code>strip()</code> (xóa khoảng trắng thừa 2 đầu), <code>replace()</code> (thay thế).",
-            "<b>Kiểm tra ký tự:</b> <code>isalpha()</code> (chữ cái), <code>isdigit()</code> (chữ số), <code>upper()</code> / <code>lower()</code>."
-          ],
-          code: `# Chuẩn hóa họ tên và kiểm tra xâu đối xứng
-ho_ten = "   nguyễn   văn   an   "
-chuan_hoa = " ".join(ho_ten.split()).title()
-print("Tên chuẩn:", chuan_hoa)
-
-s = "madam"
-if s == s[::-1]:
-    print(f"'{s}' là xâu đối xứng (Palindrome)")`,
-          exercise: "Nhập một xâu bất kỳ gồm chữ và số. Tính tổng tất cả các chữ số xuất hiện trong xâu đó (Ví dụ: 'a12b3' -> 1+2+3 = 6)."
-        }
-      },
-      {
-        title: "Bài 5: Danh sách (List), Tuple & List Comprehension",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 5 • Trung bình",
-        desc: "Thao tác mảng 1 chiều với List, thêm/xóa/sắp xếp phần tử và cách viết List Comprehension ngắn gọn chuẩn Pythonic.",
-        lesson: {
-          theory: [
-            "<b>Thao tác cơ bản:</b> <code>append(x)</code> (thêm cuối), <code>pop()</code> (xóa cuối), <code>sort()</code> (sắp xếp tăng dần), <code>sort(reverse=True)</code> (giảm dần).",
-            "<b>Hàm tổng hợp:</b> <code>len(a)</code>, <code>sum(a)</code>, <code>max(a)</code>, <code>min(a)</code>.",
-            "<b>List Comprehension:</b> Tạo danh sách mới trên 1 dòng: <code>chan = [x for x in a if x % 2 == 0]</code>."
-          ],
-          code: `# Nhập dãy số trên 1 dòng và lọc số nguyên tố
-a = list(map(int, input("Nhập dãy số cách nhau dấu cách: ").split()))
-
-def la_snt(n):
-    if n < 2: return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0: return False
-    return True
-
-ds_snt = [x for x in a if la_snt(x)]
-print("Các số nguyên tố trong dãy:", ds_snt)`,
-          exercise: "Cho danh sách N số nguyên. Tìm phần tử lớn thứ hai trong danh sách (không tính các giá trị trùng với số lớn nhất)."
-        }
-      },
-      {
-        title: "Bài 6: Tập hợp (Set) & Từ điển (Dictionary) - Tối ưu tốc độ",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 6 • Trung bình - Khá",
-        desc: "Ứng dụng Set loại bỏ phần tử trùng lặp và Dictionary để đếm tần suất xuất hiện với độ phức tạp O(1).",
-        lesson: {
-          theory: [
-            "<b>Set (Tập hợp):</b> Chứa các phần tử duy nhất (không trùng lặp), hỗ trợ phép giao (<code>&</code>), hợp (<code>|</code>), hiệu (<code>-</code>).",
-            "<b>Dictionary (Từ điển):</b> Lưu trữ cặp <code>{key: value}</code>. Tra cứu cực nhanh, là vũ khí tối thượng giải các bài toán đếm tần suất trong đề thi HSG."
-          ],
-          code: `# Đếm số lần xuất hiện của từng phần tử trong mảng
-a = [4, 2, 4, 5, 2, 4, 9]
-dem = {}
-
-for x in a:
-    dem[x] = dem.get(x, 0) + 1
-
-for k, v in dem.items():
-    print(f"Số {k} xuất hiện {v} lần")`,
-          exercise: "Cho mảng gồm N phần tử. Tìm phần tử xuất hiện nhiều nhất trong mảng (nếu có nhiều số cùng tần suất thì in số nhỏ nhất)."
-        }
-      },
-      {
-        title: "Bài 7: Hàm (Function), Đệ quy & Xử lý Tệp (File I/O) thi HSG",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 7 • Nâng cao",
-        desc: "Xây dựng chương trình con, tư duy đệ quy quay lui và chuẩn đọc/ghi file .INP / .OUT trong các kỳ thi Học sinh giỏi.",
-        lesson: {
-          theory: [
-            "<b>Đọc/Ghi tệp chuẩn thi HSG:</b> Sử dụng <code>sys.stdin = open('TENBAI.INP', 'r')</code> và <code>sys.stdout = open('TENBAI.OUT', 'w')</code> giúp giữ nguyên lệnh <code>input()</code> và <code>print()</code> quen thuộc.",
-            "<b>Đệ quy (Recursion):</b> Hàm tự gọi lại chính nó với bài toán nhỏ hơn kèm điều kiện dừng rõ ràng."
-          ],
-          code: `import sys
-# Mẫu đọc ghi file chuẩn kỳ thi Học sinh giỏi
-# sys.stdin = open("TONG.INP", "r")
-# sys.stdout = open("TONG.OUT", "w")
-
-def ucln(a, b):
-    if b == 0:
-        return a
-    return ucln(b, a % b)
-
-a, b = map(int, input("Nhập 2 số a, b: ").split())
-print("Ước chung lớn nhất:", ucln(a, b))`,
-          exercise: "Sử dụng đệ quy quay lui để liệt kê tất cả các dãy nhị phân có độ dài N."
-        }
-      },
-      {
-        title: "Bài 8: Thuật toán nâng cao (Sàng nguyên tố, Tìm kiếm nhị phân, QHĐ)",
-        category: "Học Lập Trình Python",
-        type: "Mức độ 8 • Chuyên sâu / HSG",
-        desc: "Các thuật toán tối ưu thời gian chạy dưới 1 giây: Sàng Eratosthenes, Mảng cộng dồn, Tìm kiếm nhị phân và Quy hoạch động cơ bản.",
-        lesson: {
-          theory: [
-            "<b>Sàng nguyên tố Eratosthenes:</b> Tìm toàn bộ số nguyên tố đến 10^6 chỉ trong 0.1 giây.",
-            "<b>Mảng cộng dồn (Prefix Sum):</b> Tính tổng đoạn từ L đến R trong O(1) bằng công thức <code>P[R] - P[L-1]</code>.",
-            "<b>Tìm kiếm nhị phân (Binary Search):</b> Tìm kiếm trên dãy đã sắp xếp với độ phức tạp O(log N) qua thư viện <code>bisect</code>."
-          ],
-          code: `# Sàng số nguyên tố Eratosthenes đến N
-def sang_nguyen_to(n):
-    prime = [True] * (n + 1)
-    prime[0] = prime[1] = False
-    for i in range(2, int(n**0.5) + 1):
-        if prime[i]:
-            for j in range(i * i, n + 1, i):
-                prime[j] = False
-    return [i for i in range(2, n + 1) if prime[i]]
-
-print("Các SNT <= 50:", sang_nguyen_to(50))`,
-          exercise: "Cho dãy N số nguyên (N <= 10^5) và Q truy vấn. Mỗi truy vấn cho cặp (L, R), hãy in ra tổng các phần tử từ vị trí L đến R."
-        }
-      },
-
-      // ========================================================
-      // PHẦN 2: KHO TÀI LIỆU GOOGLE DRIVE CỦA BẠN
-      // ========================================================
+    const driveDocs = [
       {
         title: "Tài liệu học lập trình (Kho Drive tổng hợp)",
         category: "Học Lập Trình Python",
@@ -543,7 +450,20 @@ print("Các SNT <= 50:", sang_nguyen_to(50))`,
       }
     ];
 
+    // Gộp danh sách chuyên đề Python và tài liệu Drive
+    const allItems = [
+      ...pythonTopics.map(t => ({
+        title: t.title,
+        category: "Học Lập Trình Python",
+        type: t.level + " • 60 Bài tập",
+        desc: t.desc,
+        topicObj: t
+      })),
+      ...driveDocs
+    ];
+
     let currentCategory = "Tất cả";
+    let activeTopic = null;
 
     function setCategory(cat, btn) {
       currentCategory = cat;
@@ -557,71 +477,138 @@ print("Các SNT <= 50:", sang_nguyen_to(50))`,
       const grid = document.getElementById('docGrid');
       grid.innerHTML = "";
 
-      const filtered = documents.filter(doc => {
-        const matchCat = currentCategory === "Tất cả" || doc.category === currentCategory;
-        const matchKey = doc.title.toLowerCase().includes(keyword) || doc.desc.toLowerCase().includes(keyword);
+      const filtered = allItems.filter(item => {
+        const matchCat = currentCategory === "Tất cả" || item.category === currentCategory;
+        const matchKey = item.title.toLowerCase().includes(keyword) || item.desc.toLowerCase().includes(keyword);
         return matchCat && matchKey;
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = "<p style='color: var(--text-sub); grid-column: 1/-1; text-align: center; padding: 30px;'>Không tìm thấy tài liệu phù hợp.</p>";
+        grid.innerHTML = "<p style='color: var(--text-sub); grid-column: 1/-1; text-align: center; padding: 30px;'>Không tìm thấy nội dung phù hợp.</p>";
         return;
       }
 
-      filtered.forEach((doc, index) => {
-        // Tìm vị trí thực trong mảng gốc để mở đúng bài học
-        const originalIndex = documents.indexOf(doc);
-        const actionBtn = doc.lesson
-          ? `<button class="btn-lesson" onclick="openLesson(${originalIndex})">📖 Đọc bài học & Code mẫu</button>`
-          : `<a href="${doc.link}" target="_blank" class="btn-download">📥 Xem / Tải tài liệu</a>`;
+      filtered.forEach(item => {
+        const idx = allItems.indexOf(item);
+        const btnHtml = item.topicObj
+          ? `<button class="btn-lesson" onclick="openTopic(${idx})">📖 Học ngay (Lý thuyết & 60 Bài tập)</button>`
+          : `<a href="${item.link}" target="_blank" class="btn-download">📥 Xem / Tải tài liệu</a>`;
 
         grid.innerHTML += `
           <div class="card">
             <div>
               <div class="card-header">
-                <span class="badge">${doc.category}</span>
-                <span class="file-type">${doc.type}</span>
+                <span class="badge">${item.category}</span>
+                <span class="file-type">${item.type}</span>
               </div>
-              <h3>${doc.title}</h3>
-              <p>${doc.desc}</p>
+              <h3>${item.title}</h3>
+              <p>${item.desc}</p>
             </div>
-            ${actionBtn}
+            ${btnHtml}
           </div>
         `;
       });
     }
 
-    function openLesson(idx) {
-      const doc = documents[idx];
-      if (!doc || !doc.lesson) return;
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
 
-      document.getElementById('modalLevel').textContent = doc.type;
-      document.getElementById('modalTitle').textContent = doc.title;
+    function openTopic(idx) {
+      activeTopic = allItems[idx].topicObj;
+      if (!activeTopic) return;
+      document.getElementById('modalLevel').textContent = activeTopic.level + " • Đầy đủ 3 dạng bài (60 bài)";
+      document.getElementById('modalTitle').textContent = activeTopic.title;
 
-      const theoryHtml = doc.lesson.theory.map(item => `<li>${item}</li>`).join('');
-      const escapedCode = doc.lesson.code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-      document.getElementById('modalBody').innerHTML = `
-        <div class="lesson-section">
-          <h4>1. Kiến thức trọng tâm</h4>
-          <ul>${theoryHtml}</ul>
-        </div>
-        <div class="lesson-section">
-          <h4>2. Code mẫu minh họa (Python 3)</h4>
-          <div class="code-wrapper">
-            <button class="copy-code-btn" onclick="copyCode(this)">📋 Sao chép code</button>
-            <pre><code>${escapedCode}</code></pre>
-          </div>
-        </div>
-        <div class="lesson-section">
-          <h4>3. Bài tập tự luyện</h4>
-          <p style="background: var(--tag-bg); color: var(--tag-text); padding: 12px 15px; border-radius: 8px; font-weight: 500;">
-            💡 ${doc.lesson.exercise}
-          </p>
-        </div>
-      `;
-
+      // Reset về tab Lý thuyết & Ví dụ
+      const firstTab = document.querySelector('.ltab-btn');
+      switchLessonTab('theory', firstTab);
       document.getElementById('lessonModal').classList.add('open');
+    }
+
+    function switchLessonTab(tabName, btn) {
+      document.querySelectorAll('.ltab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const body = document.getElementById('modalBody');
+      body.scrollTop = 0;
+
+      if (tabName === 'theory') {
+        const theoryHtml = activeTopic.theory.map(t => `<div class="theory-box">${t}</div>`).join('');
+        const exHtml = activeTopic.examples.map(ex => `
+          <div class="ex-item">
+            <div class="ex-title">💡 ${ex.name}</div>
+            <div class="code-wrapper">
+              <button class="copy-code-btn" onclick="copyCode(this)">📋 Sao chép</button>
+              <pre><code>${escapeHtml(ex.code)}</code></pre>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-sub);"><b>Giải thích:</b> ${ex.explain}</p>
+          </div>
+        `).join('');
+
+        body.innerHTML = `
+          <h3 style="color: var(--primary); margin-bottom: 12px;">I. Lý thuyết trọng tâm & Kỹ thuật cốt lõi</h3>
+          ${theoryHtml}
+          <h3 style="color: var(--accent-green); margin: 22px 0 12px 0;">II. Ví dụ minh họa chi tiết</h3>
+          ${exHtml}
+        `;
+      }
+      else if (tabName === 'trace') {
+        const listHtml = activeTopic.trace.map((item, i) => `
+          <div class="ex-item">
+            <div class="ex-title">Bài ${i + 1}: Cho biết kết quả xuất ra màn hình khi chạy đoạn lệnh sau:</div>
+            <pre><code>${escapeHtml(item[0])}</code></pre>
+            <button class="ans-toggle" onclick="toggleAns(this)">👁️ Xem kết quả chạy tay</button>
+            <div class="ans-content">
+              <b style="color: var(--accent-green);">Kết quả:</b> ${escapeHtml(item[1])}
+            </div>
+          </div>
+        `).join('');
+
+        body.innerHTML = `
+          <p style="margin-bottom: 14px; color: var(--text-sub);"><b>Hướng dẫn:</b> Hãy tự nhẩm giá trị từng biến qua từng dòng lệnh trước khi bấm nút xem đáp án.</p>
+          ${listHtml}
+        `;
+      }
+      else if (tabName === 'algo') {
+        const listHtml = activeTopic.algo.map((item, i) => `
+          <div class="ex-item">
+            <div class="ex-title">Bài ${i + 1}: Chuyển đổi thuật toán sau sang mã nguồn Python:</div>
+            <p style="margin-bottom: 8px;">${escapeHtml(item[0])}</p>
+            <button class="ans-toggle" onclick="toggleAns(this)">💻 Xem code Python mẫu</button>
+            <div class="ans-content">
+              <div class="code-wrapper">
+                <button class="copy-code-btn" onclick="copyCode(this)">📋 Sao chép</button>
+                <pre><code>${escapeHtml(item[1])}</code></pre>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        body.innerHTML = `
+          <p style="margin-bottom: 14px; color: var(--text-sub);"><b>Hướng dẫn:</b> Đọc kỹ từng bước mô tả thuật toán và hiện thực hóa bằng cú pháp Python tối ưu.</p>
+          ${listHtml}
+        `;
+      }
+      else if (tabName === 'coding') {
+        const listHtml = activeTopic.coding.map((item, i) => `
+          <div class="ex-item">
+            <div class="ex-title" style="color: var(--accent-purple);">${escapeHtml(item)}</div>
+            <p style="font-size: 0.85rem; color: var(--text-sub);">Yêu cầu: Viết chương trình hoàn chỉnh, kiểm thử với nhiều bộ dữ liệu (biên, số âm, số lớn) để đảm bảo độ chính xác 100%.</p>
+          </div>
+        `).join('');
+
+        body.innerHTML = `
+          <p style="margin-bottom: 14px; color: var(--text-sub);"><b>Bộ 20 bài tập lập trình thực hành & bồi dưỡng HSG:</b> Phân mức từ cơ bản đến vận dụng cao.</p>
+          ${listHtml}
+        `;
+      }
+    }
+
+    function toggleAns(btn) {
+      const content = btn.nextElementSibling;
+      content.classList.toggle('show');
+      btn.textContent = content.classList.contains('show') ? "🙈 Ẩn đáp án" : "👁️ Xem đáp án / Code mẫu";
     }
 
     function closeModal() {
@@ -636,7 +623,7 @@ print("Các SNT <= 50:", sang_nguyen_to(50))`,
       const codeText = btn.nextElementSibling.innerText;
       navigator.clipboard.writeText(codeText);
       btn.textContent = "✅ Đã chép!";
-      setTimeout(() => { btn.textContent = "📋 Sao chép code"; }, 2000);
+      setTimeout(() => { btn.textContent = "📋 Sao chép"; }, 2000);
     }
 
     function toggleTheme() {
@@ -647,6 +634,5 @@ print("Các SNT <= 50:", sang_nguyen_to(50))`,
 
     renderDocs();
   </script>
-
 </body>
 </html>
